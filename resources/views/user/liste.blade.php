@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="row mb-4">
-    <div class="col-md-6 mb-3">
+    <div class="col">
         <div class="card text-left">
             <div class="card-body">
                 <h4 class="card-title mb-3">Striped rows</h4>
@@ -11,39 +11,34 @@
                     <table class="table table-striped">
                         <thead>
                             <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">Name</th>
-                                <th scope="col">Avatar</th>
-                                <th scope="col">Email</th>
+                                <th scope="col">Nom</th>
+                                <th scope="col">Prénom</th>
+                                <th scope="col">Activité</th>
+                                <th scope="col">Telephone</th>
                                 <th scope="col">Status</th>
                                 <th scope="col">Action</th>
                             </tr>
                         </thead>
                         <tbody>
+                            @foreach ($users as $user)
                             <tr>
-                                <th scope="row">1</th>
-                                <td>Smith Doe</td>
-                                <td><img class="rounded-circle m-0 avatar-sm-table" src="../../dist-assets/images/faces/1.jpg" alt="" /></td>
-                                <td>Smith@gmail.com</td>
-                                <td><span class="badge badge-success">Active</span></td>
+                                <th scope="row">{{$user->nom}}</th>
+                                <td>{{$user->prenom}}</td>
+                                <td>Musculation</td>
+                                <td>{{$user->tel}}</td>
+                                @if ($user->licence_at)
+                                <td><span class="badge badge-success">OK</span></td>
+                                @else
+                                    @if ($user->validation_at)
+                                    <td><span class="badge badge-warning">Attente sygelic</span></td>
+                                    @else
+                                    <td><span class="badge badge-danger">Attente validation</span></td>
+                                    @endif
+                                @endif
+
                                 <td><a class="text-success mr-2" href="#"><i class="nav-icon i-Pen-2 font-weight-bold"></i></a><a class="text-danger mr-2" href="#"><i class="nav-icon i-Close-Window font-weight-bold"></i></a></td>
                             </tr>
-                            <tr>
-                                <th scope="row">2</th>
-                                <td>Jhon Doe</td>
-                                <td><img class="rounded-circle m-0 avatar-sm-table" src="../../dist-assets/images/faces/1.jpg" alt="" /></td>
-                                <td>Jhon@gmail.com</td>
-                                <td><span class="badge badge-info">Pending</span></td>
-                                <td><a class="text-success mr-2" href="#"><i class="nav-icon i-Pen-2 font-weight-bold"></i></a><a class="text-danger mr-2" href="#"><i class="nav-icon i-Close-Window font-weight-bold"></i></a></td>
-                            </tr>
-                            <tr>
-                                <th scope="row">3</th>
-                                <td>Alex</td>
-                                <td><img class="rounded-circle m-0 avatar-sm-table" src="../../dist-assets/images/faces/1.jpg" alt="" /></td>
-                                <td>Otto@gmail.com</td>
-                                <td><span class="badge badge-warning">Not Active</span></td>
-                                <td><a class="text-success mr-2" href="#"><i class="nav-icon i-Pen-2 font-weight-bold"></i></a><a class="text-danger mr-2" href="#"><i class="nav-icon i-Close-Window font-weight-bold"></i></a></td>
-                            </tr>
+                            @endforeach
                         </tbody>
                     </table>
                 </div>
