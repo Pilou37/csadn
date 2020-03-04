@@ -19,10 +19,23 @@ use Illuminate\Support\Str;
 
 $factory->define(User::class, function (Faker $faker) {
     return [
-        'name' => $faker->name,
+        'nom' => $faker->lastName,
+        'prenom' => $faker->firstName,
+        'password' => bcrypt('12345678'), // password
+        'naissance_at' => $faker->date('Y-m-d'),
+        'naissance_lieu' => $faker->city,
+        'adresse' => $faker->streetAddress,
+        'cp' => $faker->numberBetween(37000, 37900),
+        'ville' => $faker->city,
+        'tel' => $faker->e164PhoneNumber,
         'email' => $faker->unique()->safeEmail,
-        'email_verified_at' => now(),
-        'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
-        'remember_token' => Str::random(10),
+        'email_verified_at' => $faker->dateTime(),
+        'photo' => $faker->imageUrl($width = 150, $height = 300),
+        'origine' => $faker->randomDigit,
+        'activite' => $faker->randomDigit,
+        'licence' => $faker->optional()->randomNumber(),
+        'licence_at' => $faker->optional()->dateTimeThisYear(),
+        'validation_at' => $faker->optional()->dateTimeThisYear()/*,
+        'remember_token' => $faker->asciify('**********')*/
     ];
 });
