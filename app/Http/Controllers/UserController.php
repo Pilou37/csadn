@@ -26,7 +26,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
+        return view('user.form');
     }
 
     /**
@@ -37,7 +37,9 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        request()->validate([
+            'nom' => 'required'
+        ]);
     }
 
     /**
@@ -82,6 +84,8 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        //
+        $user->delete();
+
+        return redirect('user');
     }
 }

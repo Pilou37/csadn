@@ -5,8 +5,7 @@
     <div class="col">
         <div class="card text-left">
             <div class="card-body">
-                <h4 class="card-title mb-3">Striped rows</h4>
-                <p>Use <code>.table-striped</code> to add zebra-striping to any table rowwithin the <code>&lt;tbody&gt;</code>.</p>
+                <h4 class="card-title mb-3">Liste des adhérents</h4>
                 <div class="table-responsive">
                     <table class="table table-striped">
                         <thead>
@@ -36,8 +35,18 @@
                                     @endif
                                 @endif
 
-                                <td><a class="text-success mr-2" href="#"><i class="nav-icon i-Pen-2 font-weight-bold"></i></a><a class="text-danger mr-2" href="#"><i class="nav-icon i-Close-Window font-weight-bold"></i></a></td>
-                            </tr>
+                                <td>
+                                    <a class="text-success mr-2" href="{{route('user.edit',$user)}}"><i class="nav-icon i-Pen-2 font-weight-bold"></i></a>
+                                    <!--<a class="text-danger mr-2" href="#"><i class="nav-icon i-Close-Window font-weight-bold"></i></a></td>-->
+                                    <a class="text-danger mr-2" href="{{ route('user.destroy',$user) }}"
+                                                onclick="event.preventDefault();
+                                                document.getElementById('delete-form-{{$user->id}}').submit();"><i class="nav-icon i-Close-Window font-weight-bold"></i>
+                                    </a></td>
+                                    <form id="delete-form-{{$user->id}}" action="{{ route('user.destroy',$user) }}" method="POST" style="display: none;">
+                                        @method('DELETE')
+                                        @csrf
+                                    </form>
+                                </tr>
                             @endforeach
                         </tbody>
                     </table>
