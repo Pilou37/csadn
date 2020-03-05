@@ -12,17 +12,6 @@
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
 
-    <script language="javascript">
-                                        function delete( identifiant )
-                                        {
-                                        var confirmation = confirm( "Voulez vous vraiment supprimer cet enregistrement ?" ) ;
-                                        if( confirmation )
-                                        {
-                                            id = "delete-form-"+identifiant;
-                                            document.getElementById(id).submit();
-                                        }
-                                        }
-                                    </script>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">

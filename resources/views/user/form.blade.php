@@ -1,15 +1,18 @@
 @extends('layouts.app')
 
 @section('content')
+<div class="breadcrumb">
+    <h1 class="mr-2">Gestion des adhérents</h1>
+    <ul>
+        <li><a href="">Formulaire d'adhésion</a></li>
+    </ul>
+</div>
 <div class="2-columns-form-layout">
     <div class="">
         <div class="row">
             <div class="col-lg-12">
                 <!-- start card -->
                 <div class="card">
-                    <div class="card-header bg-transparent">
-                        <h3 class="card-title">Nouvelle adhésion</h3>
-                    </div>
                     <!--begin::form-->
                 <form action="{{route('user.store')}}" method="POST">
                     @csrf
