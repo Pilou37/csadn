@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
+
     /**
      * Display a listing of the resource.
      *
@@ -37,9 +39,11 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        request()->validate([
-            'nom' => 'required'
-        ]);
+        $user = User::create($this->validator());
+        $this->storePhoto($user);
+        $this->storeCertif($user);
+
+        dd($user);
     }
 
     /**
@@ -87,5 +91,44 @@ class UserController extends Controller
         $user->delete();
 
         return redirect('user');
+    }
+
+    private function validator() {
+        return request()->validate([
+            'nom' => 'required',
+            'prenom' => 'required',
+            'naissance_at' => 'required',
+            'naissance_lieu' => 'required',
+            'adresse' => 'required',
+            'cp' => 'required',
+            'ville' => 'required',
+            'tel' => 'required',
+            'email' => 'required',
+            'photo' => 'sometimes|image|mimes:jpeg,jpg,png,jpg,gif,svg|max:5000',
+            'certif' => 'sometimes|file',
+            'certif_at' => 'required',
+            'activite' => 'required',
+            'origine' => 'required'
+        ]);
+    }
+
+    private function storePhoto(User $user)
+    {
+        if(request('photo')) {
+            $filename = 'ident_'.$user->id.'.'.request('photo')->clientExtension();
+            $user->update([
+                'photo' => request('photo')->storeAs('photo_identite', $filename, 'public')
+            ]);
+        }
+    }
+
+    private function storeCertif(User $user)
+    {
+        if(request('certif')) {
+            $filename = 'certif_'.$user->id.'.'.request('certif')->clientExtension();
+            $user->update([
+                'certif' => request('certif')->storeAs('certificats', $filename, 'public')
+            ]);
+        }
     }
 }

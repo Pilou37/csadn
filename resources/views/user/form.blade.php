@@ -14,7 +14,7 @@
                 <!-- start card -->
                 <div class="card">
                     <!--begin::form-->
-                <form action="{{route('user.store')}}" method="POST">
+                <form action="{{route('user.store')}}" method="POST" enctype="multipart/form-data">
                     @csrf
                         <div class="card-body">
                             <div class="form-row">
@@ -53,7 +53,7 @@
                                     <label for="naissance_at" class="ul-form__label">Date de naissance :</label>
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text" id="basic-addon1"><i class="i-Male"></i></span>
+                                            <span class="input-group-text" id="basic-addon1"><i class="i-Calendar-3"></i></span>
                                         </div>
                                     <input type="date" class="form-control @error('naissance_at') is-invalid" @enderror id="naissance_at" data-cip-id="naissance_at" name="naissance_at">
                                     @error('naissance_at')
@@ -100,7 +100,7 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" id="basic-addon1"><i class="i-Mailbox-Empty"></i></span>
                                         </div>
-                                    <input type="text" class="form-control @error('cp') is-invalid" @enderror id="cp" placeholder="Entrez un code postal" data-cip-id="cp" name="cp">
+                                    <input type="number" class="form-control @error('cp') is-invalid" @enderror id="cp" placeholder="Entrez un code postal" data-cip-id="cp" name="cp">
                                     @error('cp')
                                         <div class="invalid-feedback">
                                             {{ $errors->first('cp') }}
@@ -158,24 +158,19 @@
                             <div class="custom-separator"></div>
                             <div class="form-row">
                                 <div class="form-group col-md-4">
-                                    <label for="photo" class="ul-form__label">Photo d'identité :</label>
+                                    <label for="photo" class="ul-form__label @error('photo') text-danger @enderror">Photo d'identité : {{ $errors->first('photo') }}</label>
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text" id="basic-addon1"><i class="i-Male"></i></span>
+                                            <span class="input-group-text" id="basic-addon1"><i class="i-File-Pictures"></i></span>
                                         </div>
                                         <div class="custom-file">
                                             <input type="file" class="custom-file-input @error('photo') is-invalid" @enderror" id="photo" name="photo">
                                             <label class="custom-file-label" for="photo" aria-describedby="inputGroupFileAddon02">Selection ou prendre une photo ...</label>
                                         </div>
-                                        @error('photo')
-                                        <div class="invalid-feedback">
-                                            {{ $errors->first('photo') }}
-                                        </div>
-                                        @enderror
                                     </div>
                                 </div>
                                 <div class="form-group col-md-4">
-                                    <label for="certif" class="ul-form__label">Certificat médical :</label>
+                                    <label for="certif" class="ul-form__label @error('certif') text-danger @enderror">Certificat médical : {{ $errors->first('certif') }}</label>
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" id="basic-addon1"><i class="i-Letter-Open"></i></span>
@@ -184,18 +179,13 @@
                                             <input type="file" class="custom-file-input @error('certif') is-invalid" @enderror" id="certif" name="certif">
                                             <label class="custom-file-label" for="certif" aria-describedby="inputGroupFileAddon02">Selection ou prendre une photo ...</label>
                                         </div>
-                                        @error('certif')
-                                        <div class="invalid-feedback">
-                                            {{ $errors->first('certif') }}
-                                        </div>
-                                        @enderror
                                     </div>
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label for="certif_at" class="ul-form__label">Date du certificat :</label>
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text" id="basic-addon1"><i class="i-Male"></i></span>
+                                            <span class="input-group-text" id="basic-addon1"><i class="i-Calendar-3"></i></span>
                                         </div>
                                     <input type="date" class="form-control @error('certif_at') is-invalid" @enderror id="certif_at" data-cip-id="certif_at" name="certif_at">
                                     @error('certif_at')
