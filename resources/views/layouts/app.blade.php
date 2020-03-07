@@ -9,10 +9,13 @@
     <link href="https://fonts.googleapis.com/css?family=Nunito:300,400,400i,600,700,800,900" rel="stylesheet" />
     <link href="{{ asset('css/themes/lite-blue.min.css') }}" rel="stylesheet" />
     <link href="{{ asset('css/plugins/perfect-scrollbar.min.css') }}" rel="stylesheet" />
+    <link href="{{ asset('css/plugins/datatables.min.css') }}" rel="stylesheet" />
 </head>
 
 <body class="text-left">
+
     <div class="app-admin-wrap layout-sidebar-large">
+
         <div class="main-header">
             <div>
                 <a href="{{ route('index')}}">
@@ -178,6 +181,13 @@
         <div class="main-content-wrap sidenav-open d-flex flex-column">
             <!-- ============ Body content start ============= -->
             <div class="main-content">
+                <div class="row">
+                    <div class="col">
+                        <div class="alert alert-card alert-success" role="alert"><strong class="text-capitalize">Success!</strong> Lorem ipsum dolor sit amet.
+                            <button class="close" type="button" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        </div>
+                    </div>
+                </div>
             @yield('content')
             </div>
             <!-- Footer Start -->
@@ -205,16 +215,23 @@
 
     <script src="{{ asset('js/plugins/jquery-3.3.1.min.js') }}"></script>
     <script src="{{ asset('js/plugins/bootstrap.bundle.min.js') }}"></script>
+    <!-- Sidebar -->
     <script src="{{ asset('js/plugins/perfect-scrollbar.min.js') }}"></script>
     <script src="{{ asset('js/scripts/script.min.js') }}"></script>
     <script src="{{ asset('js/scripts/sidebar.large.script.min.js') }}"></script>
+    <!-- Graphiques -->
     <script src="{{ asset('js/plugins/echarts.min.js') }}"></script>
     <script src="{{ asset('js/scripts/echart.options.min.js') }}"></script>
-    <script src="{{ asset('js/plugins/datatables.min.js') }}"></script>
-    <script src="{{ asset('js/scripts/dashboard.v4.script.min.js') }}"></script>
-    <script src="{{ asset('js/scripts/widgets-statistics.min.js') }}"></script>
     <script src="{{ asset('js/plugins/apexcharts.min.js') }}"></script>
     <script src="{{ asset('js/scripts/apexSparklineChart.script.min.js') }}"></script>
+    <!-- Tableaux -->
+    <script src="{{ asset('js/scripts/datatables.script.min.js') }}"></script>
+    <script src="{{ asset('js/plugins/datatables.min.js') }}"></script>
+    <!--  -->
+    <script src="{{ asset('js/scripts/dashboard.v4.script.min.js') }}"></script>
+    <script src="{{ asset('js/scripts/widgets-statistics.min.js') }}"></script>
+
+
     <script src="{{ asset('js/scripts/customizer.script.min.js') }}"></script>
 </body>
 

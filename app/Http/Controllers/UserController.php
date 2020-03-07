@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\SuscribeMail;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 
 class UserController extends Controller
 {
@@ -42,7 +44,9 @@ class UserController extends Controller
         $user = User::create($this->validator());
         $this->storePhoto($user);
         $this->storeCertif($user);
+        $this->initPassword($user);
 
+        Mail::to('test@test.com')->send(new SuscribeMail($user));
         dd($user);
     }
 
@@ -130,5 +134,18 @@ class UserController extends Controller
                 'certif' => request('certif')->storeAs('certificats', $filename, 'public')
             ]);
         }
+    }
+
+    private function initPassword(User $user) {
+        $alphabet = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
+        $pass = array(); //remember to declare $pass as an array
+        $alphaLength = strlen($alphabet) - 1; //put the length -1 in cache
+        for ($i = 0; $i < 8; $i++) {
+            $n = rand(0, $alphaLength);
+            $pass[] = $alphabet[$n];
+        }
+        $user->update([
+            'password' => implode($pass)
+        ]); //turn the array into a string
     }
 }
