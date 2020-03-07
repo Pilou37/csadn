@@ -47,7 +47,10 @@ class UserController extends Controller
         $this->initPassword($user);
 
         Mail::to('test@test.com')->send(new SuscribeMail($user));
-        dd($user);
+
+        //$request->session()->flash('success', 'C\'est un succès');
+
+        return redirect('user')->with('success', 'Adhérent créé');
     }
 
     /**

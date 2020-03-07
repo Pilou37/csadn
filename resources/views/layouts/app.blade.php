@@ -181,13 +181,8 @@
         <div class="main-content-wrap sidenav-open d-flex flex-column">
             <!-- ============ Body content start ============= -->
             <div class="main-content">
-                <div class="row">
-                    <div class="col">
-                        <div class="alert alert-card alert-success" role="alert"><strong class="text-capitalize">Success!</strong> Lorem ipsum dolor sit amet.
-                            <button class="close" type="button" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        </div>
-                    </div>
-                </div>
+                @include('plugins.flash-message')
+
             @yield('content')
             </div>
             <!-- Footer Start -->
