@@ -61,7 +61,7 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        //
+        return view('user.show')->with('user', $user);
     }
 
     /**
@@ -114,7 +114,7 @@ class UserController extends Controller
             'photo' => 'sometimes|image|mimes:jpeg,jpg,png,jpg,gif,svg|max:5000',
             'certif' => 'sometimes|file',
             'certif_at' => 'required',
-            'activite' => 'required',
+            'activite_id' => 'required',
             'origine' => 'required'
         ]);
     }

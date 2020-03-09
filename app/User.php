@@ -41,6 +41,22 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    /**
+     * ---------------------- MUTATEURS
+     */
+
+    /**
+     * Mutateur date de naissance.
+     */
+    public function getNaissanceAtAttribute($value)
+    {
+        return \Carbon\Carbon::parse($value)->format('d/m/Y');
+    }
+
+    /**
+     * ----------------------- RELATIONS
+     */
+
     public function activite()
     {
         return $this->BelongsTo('App\Activite');
