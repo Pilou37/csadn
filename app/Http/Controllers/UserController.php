@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Mail\SuscribeMail;
+use App\Rules\Telephone;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -109,7 +110,7 @@ class UserController extends Controller
             'adresse' => 'required',
             'cp' => 'required',
             'ville' => 'required',
-            'tel' => 'required',
+            'tel' => ['required', new Telephone],
             'email' => 'required',
             'photo' => 'sometimes|image|mimes:jpeg,jpg,png,jpg,gif,svg|max:5000',
             'certif' => 'sometimes|file',

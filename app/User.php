@@ -53,6 +53,11 @@ class User extends Authenticatable
     }
     */
 
+    public function getNaissanceAtShowAttribute()
+    {
+        return \Carbon\Carbon::parse($this->naissance_at)->format('d/m/Y');
+    }
+
     /**
      * ----------------------- RELATIONS
      */

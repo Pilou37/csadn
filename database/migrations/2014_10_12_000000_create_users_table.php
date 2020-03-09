@@ -18,7 +18,7 @@ class CreateUsersTable extends Migration
             $table->string('nom');
             $table->string('prenom');
             $table->string('password')->nullable();
-            $table->dateTime('naissance_at');
+            $table->date('naissance_at');
             $table->string('naissance_lieu');
             $table->string('adresse');
             $table->integer('cp');
@@ -27,12 +27,12 @@ class CreateUsersTable extends Migration
             $table->string('email');
             $table->string('photo')->nullable();
             $table->string('certif')->nullable();
-            $table->dateTime('certif_at')->nullable();
+            $table->date('certif_at')->nullable();
             $table->integer('origine');
             $table->unsignedBigInteger('activite_id');
             $table->integer('licence')->nullable();
-            $table->dateTime('licence_at')->nullable();
-            $table->dateTime('validation_at')->nullable();
+            $table->date('licence_at')->nullable();
+            $table->date('validation_at')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();
             $table->timestamps();

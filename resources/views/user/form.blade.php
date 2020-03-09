@@ -55,7 +55,7 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" id="basic-addon1"><i class="i-Calendar-3"></i></span>
                                         </div>
-                                    <input type="date" class="form-control @error('naissance_at') is-invalid" @enderror id="naissance_at" value="{{old('naissance_at', \Carbon\Carbon::parse($user->naissance_at)->format('Y-m-d') ?? '')}}" data-cip-id="naissance_at" name="naissance_at">
+                                    <input type="date" class="form-control @error('naissance_at') is-invalid" @enderror id="naissance_at" value="{{old('naissance_at', $user->naissance_at ?? '')}}" data-cip-id="naissance_at" name="naissance_at">
                                     @error('naissance_at')
                                         <div class="invalid-feedback">
                                             {{ $errors->first('naissance_at') }}
@@ -187,7 +187,7 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" id="basic-addon1"><i class="i-Calendar-3"></i></span>
                                         </div>
-                                    <input type="date" class="form-control @error('certif_at') is-invalid" @enderror id="certif_at" value="{{old('certif_at', \Carbon\Carbon::parse($user->certif_at)->format('Y-m-d') ?? '')}}" data-cip-id="certif_at" name="certif_at">
+                                    <input type="date" class="form-control @error('certif_at') is-invalid" @enderror id="certif_at" value="{{old('certif_at', $user->certif_at ?? '')}}" data-cip-id="certif_at" name="certif_at">
                                     @error('certif_at')
                                         <div class="invalid-feedback">
                                             {{ $errors->first('certif_at') }}
@@ -206,7 +206,7 @@
                                         @if ($activites = \App\Activite::All())
                                         @if (old('activite_id'))
                                             <?php $activite_id = old('activite_id') ?>
-                                        @elseif ($user->activite_id)
+                                        @elseif ($user->activite_id ?? '')
                                             <?php $activite_id = $user->activite_id ?>
                                         @else
                                             <?php $activite_id = 1 ?>
@@ -245,7 +245,7 @@
                                     <div class="p-3">
                                         @if (old('origine'))
                                             <?php $origine = old('origine') ?>
-                                        @elseif ($user->origine)
+                                        @elseif ($user->origine ?? '')
                                             <?php $origine = $user->origine ?>
                                         @else
                                             <?php $origine = 1 ?>

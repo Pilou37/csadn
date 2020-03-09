@@ -23,7 +23,7 @@
                             Prénom : {{$user->prenom}}
                         </div>
                         <div class="col-md-6">
-                            Né(e) le : {{ $user->naissance_at }}
+                            Né(e) le : {{ $user->naissance_at_show }}
                         </div>
                         <div class="col-md-6">
                             A : {{ $user->naissance_lieu }}
