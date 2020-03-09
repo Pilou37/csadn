@@ -227,7 +227,10 @@
     <script src="{{ asset('js/scripts/widgets-statistics.min.js') }}"></script>
 
 
+    <script src="{{ asset('js/plugins/mask/jquery.mask.min.js') }}"></script>
     <script src="{{ asset('js/scripts/customizer.script.min.js') }}"></script>
+    <script src="{{ asset('js/app.js') }}"></script>
+
 </body>
 
 </html>

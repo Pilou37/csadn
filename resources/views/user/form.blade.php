@@ -131,7 +131,7 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" id="basic-addon1"><i class="i-Old-Telephone"></i></span>
                                         </div>
-                                    <input type="tel" class="form-control @error('tel') is-invalid" @enderror id="tel" value="{{old('tel', $user->tel ?? '')}}" placeholder="Numéro de téléphone sans espace, ni tirets" data-cip-id="tel" name="tel">
+                                    <input type="tel" class="form-control tel @error('tel') is-invalid @enderror"  id="tel" value="{{old('tel', $user->tel ?? '')}}" placeholder="Numéro de téléphone sans espace, ni tirets" data-cip-id="tel" name="tel" data-mask="09 99 99 99 99">
                                     @error('tel')
                                         <div class="invalid-feedback">
                                             {{ $errors->first('tel') }}
