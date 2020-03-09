@@ -35,7 +35,7 @@
                         <tr>
                             <td>{{$user->nom}}</td>
                             <td>{{$user->prenom}}</td>
-                            <td>Musculation</td>
+                            <td>{{$user->activite->nom}}</td>
                             <td>{{$user->tel}}</td>
                             @if ($user->licence_at)
                             <td><span class="badge badge-success">OK</span></td>

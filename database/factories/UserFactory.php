@@ -32,7 +32,7 @@ $factory->define(User::class, function (Faker $faker) {
         'email_verified_at' => $faker->dateTime(),
         'photo' => $faker->imageUrl($width = 150, $height = 300),
         'origine' => $faker->randomDigit,
-        'activite' => $faker->randomDigit,
+        'activite_id' => $faker->numberBetween(1, 3),
         'licence' => $faker->optional()->randomNumber(),
         'licence_at' => $faker->optional()->dateTimeThisYear(),
         'validation_at' => $faker->optional()->dateTimeThisYear()/*,

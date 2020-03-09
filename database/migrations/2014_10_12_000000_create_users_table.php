@@ -29,7 +29,7 @@ class CreateUsersTable extends Migration
             $table->string('certif')->nullable();
             $table->dateTime('certif_at')->nullable();
             $table->integer('origine');
-            $table->integer('activite');
+            $table->unsignedBigInteger('activite_id');
             $table->integer('licence')->nullable();
             $table->dateTime('licence_at')->nullable();
             $table->dateTime('validation_at')->nullable();
