@@ -12,7 +12,11 @@ class UsersTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(User::class, 20)->create();
+        $users = factory(User::class, 20)->create();
+        foreach($users as $user) {
+            $user->reglements()->createMany(factory(App\Reglement::class, 2)->make()->toArray());
+        }
+
         $admin = User::find(1);
         $admin->email = 'admin@admin.fr';
         $admin->save();

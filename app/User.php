@@ -45,4 +45,9 @@ class User extends Authenticatable
     {
         return $this->BelongsTo('App\Activite');
     }
+
+    public function reglements()
+    {
+        return $this->hasMany('App\Reglement');
+    }
 }
