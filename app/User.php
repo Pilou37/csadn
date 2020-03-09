@@ -47,11 +47,11 @@ class User extends Authenticatable
 
     /**
      * Mutateur date de naissance.
-     */
     public function getNaissanceAtAttribute($value)
     {
         return \Carbon\Carbon::parse($value)->format('d/m/Y');
     }
+    */
 
     /**
      * ----------------------- RELATIONS

@@ -24,7 +24,7 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" id="basic-addon1"><i class="i-ID-2"></i></span>
                                         </div>
-                                    <input type="text" class="form-control @error('nom') is-invalid" @enderror id="nom" placeholder="Entrez votre nom" data-cip-id="nom" name="nom">
+                                    <input type="text" class="form-control @error('nom') is-invalid" @enderror id="nom" value="{{old('nom', $user->nom ?? '')}}" placeholder="Entrez votre nom" data-cip-id="nom" name="nom">
                                     @error('nom')
                                         <div class="invalid-feedback">
                                             {{ $errors->first('nom') }}
@@ -38,7 +38,7 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" id="basic-addon1"><i class="i-ID-2"></i></span>
                                         </div>
-                                    <input type="text" class="form-control @error('prenom') is-invalid" @enderror id="prenom" placeholder="Entrez votre prenom" data-cip-id="prenom" name="prenom">
+                                    <input type="text" class="form-control @error('prenom') is-invalid" @enderror id="prenom" value="{{old('prenom', $user->prenom ?? '')}}" placeholder="Entrez votre prenom" data-cip-id="prenom" name="prenom">
                                     @error('prenom')
                                         <div class="invalid-feedback">
                                             {{ $errors->first('prenom') }}
@@ -55,7 +55,7 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" id="basic-addon1"><i class="i-Calendar-3"></i></span>
                                         </div>
-                                    <input type="date" class="form-control @error('naissance_at') is-invalid" @enderror id="naissance_at" data-cip-id="naissance_at" name="naissance_at">
+                                    <input type="date" class="form-control @error('naissance_at') is-invalid" @enderror id="naissance_at" value="{{old('naissance_at', \Carbon\Carbon::parse($user->naissance_at)->format('Y-m-d') ?? '')}}" data-cip-id="naissance_at" name="naissance_at">
                                     @error('naissance_at')
                                         <div class="invalid-feedback">
                                             {{ $errors->first('naissance_at') }}
@@ -69,7 +69,7 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" id="basic-addon1"><i class="i-Map-Marker"></i></span>
                                         </div>
-                                    <input type="text" class="form-control @error('naissance_lieu') is-invalid" @enderror id="naissance_lieu" placeholder="Entrez un nom de ville" data-cip-id="naissance_lieu" name="naissance_lieu">
+                                    <input type="text" class="form-control @error('naissance_lieu') is-invalid" @enderror id="naissance_lieu" value="{{old('naissance_lieu', $user->naissance_lieu ?? '')}}" placeholder="Entrez un nom de ville" data-cip-id="naissance_lieu" name="naissance_lieu">
                                     @error('naissance_lieu')
                                         <div class="invalid-feedback">
                                             {{ $errors->first('naissance_lieu') }}
@@ -86,7 +86,7 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" id="basic-addon1"><i class="i-Mailbox-Empty"></i></span>
                                         </div>
-                                    <input type="text" class="form-control @error('adresse') is-invalid" @enderror id="adresse" placeholder="Entrez votre adresse" data-cip-id="adresse" name="adresse">
+                                    <input type="text" class="form-control @error('adresse') is-invalid" @enderror id="adresse" value="{{old('adresse', $user->adresse ?? '')}}" placeholder="Entrez votre adresse" data-cip-id="adresse" name="adresse">
                                     @error('adresse')
                                         <div class="invalid-feedback">
                                             {{ $errors->first('adresse') }}
@@ -100,7 +100,7 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" id="basic-addon1"><i class="i-Mailbox-Empty"></i></span>
                                         </div>
-                                    <input type="number" class="form-control @error('cp') is-invalid" @enderror id="cp" placeholder="Entrez un code postal" data-cip-id="cp" name="cp">
+                                    <input type="number" class="form-control @error('cp') is-invalid" @enderror id="cp" value="{{old('cp', $user->cp ?? '')}}" placeholder="Entrez un code postal" data-cip-id="cp" name="cp">
                                     @error('cp')
                                         <div class="invalid-feedback">
                                             {{ $errors->first('cp') }}
@@ -114,7 +114,7 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" id="basic-addon1"><i class="i-Mailbox-Empty"></i></span>
                                         </div>
-                                    <input type="text" class="form-control @error('ville') is-invalid" @enderror id="ville" placeholder="Entrez un nom de ville" data-cip-id="ville" name="ville">
+                                    <input type="text" class="form-control @error('ville') is-invalid" @enderror id="ville" value="{{old('ville', $user->ville ?? '')}}" placeholder="Entrez un nom de ville" data-cip-id="ville" name="ville">
                                     @error('ville')
                                         <div class="invalid-feedback">
                                             {{ $errors->first('ville') }}
@@ -131,7 +131,7 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" id="basic-addon1"><i class="i-Old-Telephone"></i></span>
                                         </div>
-                                    <input type="tel" class="form-control @error('tel') is-invalid" @enderror id="tel" placeholder="Numéro de téléphone sans espace, ni tirets" data-cip-id="tel" name="tel">
+                                    <input type="tel" class="form-control @error('tel') is-invalid" @enderror id="tel" value="{{old('tel', $user->tel ?? '')}}" placeholder="Numéro de téléphone sans espace, ni tirets" data-cip-id="tel" name="tel">
                                     @error('tel')
                                         <div class="invalid-feedback">
                                             {{ $errors->first('tel') }}
@@ -145,7 +145,7 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" id="basic-addon1"><i class="i-Mail-Forward"></i></span>
                                         </div>
-                                    <input type="text" class="form-control @error('email') is-invalid" @enderror id="email" placeholder="Entrez votre email" data-cip-id="email" name="email">
+                                    <input type="text" class="form-control @error('email') is-invalid" @enderror id="email" value="{{old('email', $user->email ?? '')}}" placeholder="Entrez votre email" data-cip-id="email" name="email">
                                     @error('email')
                                         <div class="invalid-feedback">
                                             {{ $errors->first('email') }}
@@ -164,7 +164,7 @@
                                             <span class="input-group-text" id="basic-addon1"><i class="i-File-Pictures"></i></span>
                                         </div>
                                         <div class="custom-file">
-                                            <input type="file" class="custom-file-input @error('photo') is-invalid" @enderror" id="photo" name="photo">
+                                            <input type="file" class="custom-file-input @error('photo') is-invalid" @enderror" id="photo" value="{{old('photo')}}" name="photo">
                                             <label class="custom-file-label" for="photo" aria-describedby="inputGroupFileAddon02">Selection ou prendre une photo ...</label>
                                         </div>
                                     </div>
@@ -176,7 +176,7 @@
                                             <span class="input-group-text" id="basic-addon1"><i class="i-Letter-Open"></i></span>
                                         </div>
                                         <div class="custom-file">
-                                            <input type="file" class="custom-file-input @error('certif') is-invalid" @enderror" id="certif" name="certif">
+                                            <input type="file" class="custom-file-input @error('certif') is-invalid" @enderror" id="certif" value="{{old('certif')}}" name="certif">
                                             <label class="custom-file-label" for="certif" aria-describedby="inputGroupFileAddon02">Selection ou prendre une photo ...</label>
                                         </div>
                                     </div>
@@ -187,7 +187,7 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" id="basic-addon1"><i class="i-Calendar-3"></i></span>
                                         </div>
-                                    <input type="date" class="form-control @error('certif_at') is-invalid" @enderror id="certif_at" data-cip-id="certif_at" name="certif_at">
+                                    <input type="date" class="form-control @error('certif_at') is-invalid" @enderror id="certif_at" value="{{old('certif_at', \Carbon\Carbon::parse($user->certif_at)->format('Y-m-d') ?? '')}}" data-cip-id="certif_at" name="certif_at">
                                     @error('certif_at')
                                         <div class="invalid-feedback">
                                             {{ $errors->first('certif_at') }}
@@ -204,9 +204,17 @@
                                     <label for="activite_id" class="ul-form__label @error('activite_id') text-danger @enderror">Activité principale :  {{ $errors->first('activite_id') }}</label>
                                     <div class="p-3">
                                         @if ($activites = \App\Activite::All())
+                                        @if (old('activite_id'))
+                                            <?php $activite_id = old('activite_id') ?>
+                                        @elseif ($user->activite_id)
+                                            <?php $activite_id = $user->activite_id ?>
+                                        @else
+                                            <?php $activite_id = 1 ?>
+                                        @endif
                                         @foreach ($activites as $activite)
                                         <label class="radio radio-primary">
-                                            <input type="radio" name="activite_id" value="{{$activite->id}}">
+                                            <input type="radio" name="activite_id" value="{{$activite->id}}"
+                                                @if ($activite->id == $activite_id)) checked @endif>
                                             <span class="p-1">{{$activite->nom}}</span>
                                             <span class="checkmark"></span>
                                         </label>
@@ -235,23 +243,30 @@
                                     <br>
                                     <small class="">Si vous n'avez aucun lien avec le ministère des armées, selectionnez "Autre"</small>
                                     <div class="p-3">
+                                        @if (old('origine'))
+                                            <?php $origine = old('origine') ?>
+                                        @elseif ($user->origine)
+                                            <?php $origine = $user->origine ?>
+                                        @else
+                                            <?php $origine = 1 ?>
+                                        @endif
                                         <label class="radio radio-primary">
-                                            <input type="radio" name="origine" value="1">
+                                            <input type="radio" name="origine" value="1" @if ($origine == 1) checked @endif >
                                             <span class="p-1">Personnel civil du ministère des armées</span>
                                             <span class="checkmark"></span>
                                         </label>
                                         <label class="radio radio-primary">
-                                            <input type="radio" name="origine" value="2">
+                                            <input type="radio" name="origine" value="2" @if ($origine == 2) checked @endif >
                                             <span class="p-1">Personnel sous statut militaire</span>
                                             <span class="checkmark"></span>
                                         </label>
                                         <label class="radio radio-primary">
-                                            <input type="radio" name="origine" value="2" checked="checked">
+                                            <input type="radio" name="origine" value="3" @if ($origine == 3) checked @endif >
                                             <span class="p-1">Famille de civil et/ou militaire</span>
                                             <span class="checkmark"></span>
                                         </label>
                                         <label class="radio radio-primary">
-                                            <input type="radio" name="origine" value="2" checked="checked">
+                                            <input type="radio" name="origine" value="4" @if ($origine == 4) checked @endif>
                                             <span class="p-1">Autre</span>
                                             <span class="checkmark"></span>
                                         </label>
