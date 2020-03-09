@@ -85,7 +85,18 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        //
+        $user->fill($this->validator());
+        $this->storePhoto($user);
+        $this->storeCertif($user);
+        $this->initPassword($user);
+
+        $user->save();
+
+        //Mail::to('test@test.com')->send(new SuscribeMail($user));
+
+        //$request->session()->flash('success', 'C\'est un succès');
+
+        return redirect('user')->with('info', 'Adhérent créé');
     }
 
     /**

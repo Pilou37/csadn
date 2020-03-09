@@ -2,8 +2,9 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
+use App\Activite;
 use App\User;
-use Faker\Generator as Faker;
+use Faker\Generator as FakerEn;
 use Illuminate\Support\Str;
 
 /*
@@ -17,8 +18,11 @@ use Illuminate\Support\Str;
 |
 */
 
-$factory->define(User::class, function (Faker $faker) {
+$factory->define(User::class, function (FakerEn $faker) {
+    $fakerFr = Faker\Factory::create('fr_FR');
+    $max = Activite::count();
     return [
+        'genre' => $faker->numberBetween(1, 2),
         'nom' => $faker->lastName,
         'prenom' => $faker->firstName,
         'password' => bcrypt('12345678'), // password
@@ -27,12 +31,12 @@ $factory->define(User::class, function (Faker $faker) {
         'adresse' => $faker->streetAddress,
         'cp' => $faker->numberBetween(37000, 37900),
         'ville' => $faker->city,
-        'tel' => $faker->e164PhoneNumber,
+        'tel' => $fakerFr->serviceNumber,
         'email' => $faker->unique()->safeEmail,
         'email_verified_at' => $faker->dateTime(),
-        'photo' => $faker->imageUrl($width = 150, $height = 300),
-        'origine' => $faker->randomDigit,
-        'activite_id' => $faker->numberBetween(1, 3),
+        'photo' => 'photo_identite/no-image.png',
+        'origine' => $faker->numberBetween(1, 4),
+        'activite_id' => $faker->numberBetween(1, Activite::count()),
         'licence' => $faker->optional()->randomNumber(),
         'licence_at' => $faker->optional()->dateTimeThisYear(),
         'validation_at' => $faker->optional()->dateTimeThisYear()/*,

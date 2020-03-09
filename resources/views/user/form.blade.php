@@ -14,8 +14,13 @@
                 <!-- start card -->
                 <div class="card">
                     <!--begin::form-->
-                <form action="{{route('user.store')}}" method="POST" enctype="multipart/form-data">
-                    @csrf
+                @if ($user ?? '')
+                    <form action="{{route('user.update', $user)}}" method="POST" enctype="multipart/form-data">
+                        @method('PATCH')
+                @else
+                    <form action="{{route('user.store')}}" method="POST" enctype="multipart/form-data">
+                @endif
+                        @csrf
                         <div class="card-body">
                             <div class="form-row">
                                 <div class="form-group col-md-6">
@@ -203,7 +208,7 @@
                                 <div class="form-group col-md-6">
                                     <label for="activite_id" class="ul-form__label @error('activite_id') text-danger @enderror">Activité principale :  {{ $errors->first('activite_id') }}</label>
                                     <div class="p-3">
-                                        @if ($activites = \App\Activite::All())
+                                        @if ($activites = \App\Activite::orderBy('tarif', 'asc')->get())
                                         @if (old('activite_id'))
                                             <?php $activite_id = old('activite_id') ?>
                                         @elseif ($user->activite_id ?? '')
@@ -215,7 +220,7 @@
                                         <label class="radio radio-primary">
                                             <input type="radio" name="activite_id" value="{{$activite->id}}"
                                                 @if ($activite->id == $activite_id)) checked @endif>
-                                            <span class="p-1">{{$activite->nom}}</span>
+                                            <span class="p-1"><strong>{{$activite->nom}} - </strong>{{$activite->tarif}} €</span>
                                             <span class="checkmark"></span>
                                         </label>
                                         @endforeach
@@ -224,19 +229,6 @@
                                         Aucune activitée connue
                                     @endif
                                     </div>
-                                    <div class="p-3">
-                                        <label class="radio radio-primary">
-                                            <input type="radio" name="activite_id" value="1">
-                                            <span class="p-1">Licence temporaire</span>
-                                            <span class="checkmark"></span>
-                                        </label>
-                                        <label class="radio radio-primary">
-                                            <input type="radio" name="activite_id" value="1">
-                                            <span class="p-1">Adhésion sans activité</span>
-                                            <span class="checkmark"></span>
-                                        </label>
-                                    </div>
-
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label for="origine" class="ul-form__label">Origine:</label>
