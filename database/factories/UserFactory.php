@@ -37,6 +37,7 @@ $factory->define(User::class, function (FakerEn $faker) {
         'photo' => 'photo_identite/no-image.png',
         'origine' => $faker->numberBetween(1, 4),
         'activite_id' => $faker->numberBetween(1, Activite::count()),
+        'licence_at' => $faker->optional()->dateTimeThisYear(),
         'licence' => $faker->optional()->randomNumber(),
         'licence_at' => $faker->optional()->dateTimeThisYear(),
         'validation_at' => $faker->optional()->dateTimeThisYear()/*,

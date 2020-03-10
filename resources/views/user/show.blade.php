@@ -56,6 +56,17 @@
                         Email : {{$user->email}}
                     </div>
                 </div>
+                <hr>
+                    <a href="{{ route('user.destroy',$user) }}"
+                        onclick="event.preventDefault();
+                        document.getElementById('delete-form-{{$user->id}}').submit();"
+                        class="btn  btn-danger m-1 footer-delete-left">Supprimer l'adhérent</a>
+                    <a href="{{route('user.edit',$user)}}" class="btn  btn-warning m-1 footer-delete-right">Modifier les informations</a>
+                    <form id="delete-form-{{$user->id}}" action="{{ route('user.destroy',$user) }}" method="POST" style="display: none;">
+                        @method('DELETE')
+                        @csrf
+                    </form>
+
             </div>
 
         </div>

@@ -2,13 +2,25 @@
 
 @section('content')
 <div class="breadcrumb">
-    <h1 class="mr-2">Gestion des adhérents</h1>
-    <ul>
-        <li><a href="">Formulaire d'adhésion</a></li>
-    </ul>
+
+    @if ($user ?? '')
+        <h1 class="mr-2">Gestion des adhérents</h1>
+        <ul>
+            <li>Modification des informations</li>
+        </ul>
+    @else
+        <h1 class="mr-2">Pré-inscription</h1>
+        <ul>
+            <li>Formulaire d'adhésion</li>
+        </ul>
+    @endif
 </div>
 <div class="2-columns-form-layout">
     <div class="">
+        @if (!($user ?? ''))
+        <p>Pour l'adhésion, une pré-inscription en ligne est OBLIGATOIRE.</p>
+        <p>Une fois le formulaire rempli, un mail contenant vos données de connexion et la liste des document à fournir vous sera envoyé.</p>
+        @endif
         <div class="row">
             <div class="col-lg-12">
                 <!-- start card -->
@@ -23,7 +35,28 @@
                         @csrf
                         <div class="card-body">
                             <div class="form-row">
-                                <div class="form-group col-md-6">
+                                <div class="form-group col-md-2">
+                                    <div class="p-3">
+                                        @if (old('genre'))
+                                            <?php $genre = old('genre') ?>
+                                        @elseif ($user->genre ?? '')
+                                            <?php $genre = $user->genre ?>
+                                        @else
+                                            <?php $genre = 1 ?>
+                                        @endif
+                                        <label class="radio radio-primary">
+                                            <input type="radio" name="genre" value="1" @if ($genre == 1) checked @endif >
+                                            <span class="p-1">Mr</span>
+                                            <span class="checkmark"></span>
+                                        </label>
+                                        <label class="radio radio-primary">
+                                            <input type="radio" name="genre" value="2" @if ($genre == 2) checked @endif >
+                                            <span class="p-1">Mme</span>
+                                            <span class="checkmark"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-5">
                                     <label for="nom" class="ul-form__label">NOM :</label>
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
@@ -37,7 +70,7 @@
                                     @enderror
                                     </div>
                                 </div>
-                                <div class="form-group col-md-6">
+                                <div class="form-group col-md-5">
                                     <label for="prenom" class="ul-form__label">Prénom :</label>
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
@@ -273,11 +306,8 @@
                             <div class="mc-footer">
                                 <div class="row">
                                     <div class="col-lg-12">
-                                        <button type="submit" class="btn  btn-primary m-1">Ajouter</button>
-                                        <button type="button" class="btn btn-outline-secondary m-1">Annuler</button>
-
-
-                                        <button type="button" class="btn  btn-danger m-1 footer-delete-right">Pas de fonction</button>
+                                        <button type="button" class="btn btn-outline-secondary m-1"  onclick="history.back()">Annuler</button>
+                                        <button type="submit" class="btn  btn-primary m-1 footer-delete-right">Valider</button>
                                     </div>
                                 </div>
                             </div>

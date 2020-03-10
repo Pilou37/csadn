@@ -118,7 +118,7 @@
                 <!-- User avatar dropdown -->
                 <div class="dropdown">
                     <div class="user col align-self-end">
-                        <img src="{{ asset('images/avatar.png') }}" id="userDropdown" alt="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <img src="{{ asset('storage/'.Auth::user()->photo) }}" id="userDropdown" alt="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
                             <div class="dropdown-header">
                                 <i class="i-Lock-User mr-1"></i> {{ Auth::user()->nom }}
@@ -142,7 +142,7 @@
             @else
             <a class="nav-link" href="{{ route('login') }}">Connexion</a>
             @if (Route::has('register'))
-            <a class="nav-link" href="{{ route('register') }}">Adhérer</a>
+            <a class="nav-link" href="{{ route('user.create') }}">Adhérer</a>
             @endif
             @endauth
         </div>
@@ -164,11 +164,11 @@
             <div class="sidebar-left-secondary rtl-ps-none" data-perfect-scrollbar="" data-suppress-scroll-x="true">
                 <!-- Submenu Dashboards-->
                 <ul class="childNav" data-parent="adherents">
-                    <li class="nav-item"><a href="{{ route('user.create')}}"><i class="nav-icon i-Add-User"></i><span class="item-name">Ajouter un adhérent</span></a></li>
-                    <li class="nav-item"><a href="{{ route('user.index')}}"><i class="nav-icon i-ID-3"></i><span class="item-name">Liste des utilisateurs</span></a></li>
+                    <li class="nav-item"><a href="{{ route('user.create')}}"><i class="nav-icon i-Add-User"></i><span class="item-name">Rré-inscription</span></a></li>
+                    @auth <li class="nav-item"><a href="{{ route('user.show', auth()->user())}}"><i class="nav-icon i-ID-3"></i><span class="item-name">Voir le profil</span></a></li>@endauth
                 </ul>
                 <ul class="childNav" data-parent="administration">
-                    <li class="nav-item"><a href="#"><i class="nav-icon i-Add-File"></i><span class="item-name">Sous-menu</span></a></li>
+                    <li class="nav-item"><a href="{{ route('user.index')}}"><i class="nav-icon i-ID-3"></i><span class="item-name">Liste des utilisateurs</span></a></li>
                 </ul>
                 <ul class="childNav" data-parent="tresorerie">
                     <li class="nav-item"><a href="#"><i class="nav-icon i-Add-File"></i><span class="item-name">Sous-menu</span></a></li>
