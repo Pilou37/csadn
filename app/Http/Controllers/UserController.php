@@ -96,7 +96,7 @@ class UserController extends Controller
 
         //$request->session()->flash('success', 'C\'est un succès');
 
-        return redirect('user')->with('info', 'Adhérent créé');
+        return redirect('user')->with('success', 'Informations modifiées');
     }
 
     /**
@@ -112,22 +112,33 @@ class UserController extends Controller
         return redirect('user');
     }
 
+    public function majStatus(User $user)
+    {
+        $data = request()->validate([
+            'doc_check'       => 'sometimes|digits:1',
+            'licence_check'   => 'sometimes|digits:1',
+            'licence'         => 'required']);
+
+        dd($data);
+    }
+
     private function validator() {
         return request()->validate([
-            'nom' => 'required',
-            'prenom' => 'required',
-            'naissance_at' => 'required',
-            'naissance_lieu' => 'required',
-            'adresse' => 'required',
-            'cp' => 'required',
-            'ville' => 'required',
-            'tel' => ['required', new Telephone],
-            'email' => 'required',
-            'photo' => 'sometimes|image|mimes:jpeg,jpg,png,jpg,gif,svg|max:5000',
-            'certif' => 'sometimes|file',
-            'certif_at' => 'required',
-            'activite_id' => 'required',
-            'origine' => 'required'
+            'genre'         => 'required|digits_between:1,2',
+            'nom'           => 'required|string',
+            'prenom'        => 'required|string',
+            'naissance_at'  => 'required|date',
+            'naissance_lieu'=> 'required|string',
+            'adresse'       => 'required|string',
+            'cp'            => 'required|string',
+            'ville'         => 'required|string',
+            'tel'           => ['required', new Telephone],
+            'email'         => 'required|email',
+            'photo'         => 'sometimes|image|mimes:jpeg,jpg,png,jpg,gif,svg|max:5000',
+            'certif'        => 'sometimes|file',
+            'certif_at'     => 'required|date',
+            'activite_id'   => 'required|digits_between:1,20',
+            'origine'       => 'required|digits_between:1,4'
         ]);
     }
 

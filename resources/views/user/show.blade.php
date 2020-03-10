@@ -12,8 +12,45 @@
 <div class="row mb-4">
     <div class="col-md-12 mb-4">
         <div class="card text-left">
-            <div class="card-body">
+            <div class="card-header">
                 <h4 class="card-title mb-3">Profil de {{$user->nom}} {{$user->prenom}}</h4>
+                <form action="{{route('user.maj', $user)}}" method="POST">
+                    @csrf
+                    <div class="row">
+                        <div class="col-6 col-md-3 form-group">
+                            <label class="switch switch-success mr-3 @error('doc_check') text-danger @enderror">
+                                <span>Dossier complet </span>
+                                <input type="checkbox" name="doc_check" id="doc_check" value="1">
+                                <span class="slider"></span>
+                            </label>
+                            <div class="invalid-feedback">
+                                {{ $errors->first('doc_check') }}
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <label class="switch switch-success mr-3 @error('licence_check') text-danger @enderror">
+                                <span>Licence saisie</span>
+                                <input type="checkbox" name="licence_check" id="licence_check" value="1">
+                                <span class="slider"></span>
+                            </label>
+                            <div class="invalid-feedback">
+                                {{ $errors->first('licence_check') }}
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <input type="number" name="licence" id="licence" class="form-control form-control-rounded @error('licence') is-invalid @enderror" placeholder="Numéro de licence">
+                            <div class="invalid-feedback">
+                                {{ $errors->first('licence') }}
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <button type="submit" class="btn  btn-primary btn-block m-1">Valider</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="card-body">
+
                 <div class="row">
                     <div class="col-md-10">
                         <div class="col-md-6">

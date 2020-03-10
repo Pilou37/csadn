@@ -35,7 +35,7 @@
                         @csrf
                         <div class="card-body">
                             <div class="form-row">
-                                <div class="form-group col-md-2">
+                                <div class="form-group col-md-1">
                                     <div class="p-3">
                                         @if (old('genre'))
                                             <?php $genre = old('genre') ?>
@@ -70,7 +70,7 @@
                                     @enderror
                                     </div>
                                 </div>
-                                <div class="form-group col-md-5">
+                                <div class="form-group col-md-6">
                                     <label for="prenom" class="ul-form__label">Prénom :</label>
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
@@ -87,7 +87,7 @@
                             </div>
                             <div class="custom-separator"></div>
                             <div class="form-row">
-                                <div class="form-group col-md-6">
+                                <div class="form-group col-md-4">
                                     <label for="naissance_at" class="ul-form__label">Date de naissance :</label>
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
@@ -101,7 +101,7 @@
                                     @enderror
                                     </div>
                                 </div>
-                                <div class="form-group col-md-6">
+                                <div class="form-group col-md-8">
                                     <label for="naissance_lieu" class="ul-form__label">Ville de naissance :</label>
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
@@ -132,7 +132,7 @@
                                     @enderror
                                     </div>
                                 </div>
-                                <div class="form-group col-md-6">
+                                <div class="form-group col-md-4">
                                     <label for="cp" class="ul-form__label">Code postal :</label>
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
@@ -146,7 +146,7 @@
                                     @enderror
                                     </div>
                                 </div>
-                                <div class="form-group col-md-6">
+                                <div class="form-group col-md-8">
                                     <label for="ville" class="ul-form__label">Ville :</label>
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
@@ -163,13 +163,13 @@
                             </div>
                             <div class="custom-separator"></div>
                             <div class="form-row">
-                                <div class="form-group col-md-6">
+                                <div class="form-group col-md-4">
                                     <label for="tel" class="ul-form__label">Téléphone :</label>
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" id="basic-addon1"><i class="i-Old-Telephone"></i></span>
                                         </div>
-                                    <input type="tel" class="form-control tel @error('tel') is-invalid @enderror"  id="tel" value="{{old('tel', $user->tel ?? '')}}" placeholder="Numéro de téléphone sans espace, ni tirets" data-cip-id="tel" name="tel" data-mask="09 99 99 99 99">
+                                    <input type="tel" class="form-control tel @error('tel') is-invalid @enderror"  id="tel" value="{{old('tel', $user->tel ?? '')}}" placeholder="Entrez votre numéro de téléphone" data-cip-id="tel" name="tel" data-mask="09 99 99 99 99">
                                     @error('tel')
                                         <div class="invalid-feedback">
                                             {{ $errors->first('tel') }}
@@ -177,7 +177,7 @@
                                     @enderror
                                     </div>
                                 </div>
-                                <div class="form-group col-md-6">
+                                <div class="form-group col-md-8">
                                     <label for="email" class="ul-form__label">E-mail :</label>
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
