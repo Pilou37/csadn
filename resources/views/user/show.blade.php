@@ -20,7 +20,11 @@
                         <div class="col-6 col-md-3 form-group">
                             <label class="switch switch-success mr-3 @error('doc_check') text-danger @enderror">
                                 <span>Dossier complet </span>
-                                <input type="checkbox" name="doc_check" id="doc_check" value="1">
+                                <?php $saison = \App\Saison::getActualSaison() ?>
+                                <input type="checkbox" name="doc_check" id="doc_check" value="{{$saison->id}}"
+                                @if ($user->saisons->find($saison))
+                                    checked
+                                @endif>
                                 <span class="slider"></span>
                             </label>
                             <div class="invalid-feedback">
@@ -30,7 +34,9 @@
                         <div class="col-6 col-md-3">
                             <label class="switch switch-success mr-3 @error('licence_check') text-danger @enderror">
                                 <span>Licence saisie</span>
-                                <input type="checkbox" name="licence_check" id="licence_check" value="1">
+                                <input type="checkbox" name="licence_check" id="licence_check" value="1" @if ($user->licence_at)
+                                checked
+                            @endif>
                                 <span class="slider"></span>
                             </label>
                             <div class="invalid-feedback">
@@ -38,7 +44,7 @@
                             </div>
                         </div>
                         <div class="col-6 col-md-3">
-                            <input type="number" name="licence" id="licence" class="form-control form-control-rounded @error('licence') is-invalid @enderror" placeholder="Numéro de licence">
+                        <input type="number" name="licence" id="licence" class="form-control form-control-rounded @error('licence') is-invalid @enderror" placeholder="Numéro de licence" value="{{$user->licence}}">
                             <div class="invalid-feedback">
                                 {{ $errors->first('licence') }}
                             </div>
@@ -46,6 +52,26 @@
                         <div class="col-6 col-md-3">
                             <button type="submit" class="btn  btn-primary btn-block m-1">Valider</button>
                         </div>
+                    </div>
+                    <div class="row mt-4">
+                        <div class="col-6 col-md-2">
+                            Fonctions :
+                        </div>
+                        <?php $roles = App\Role::all(); ?>
+                        @foreach ($roles as $role)
+                        <div class="col-6 col-md-2 form-group">
+                            <label class="switch switch-success mr-3">
+                                <span>{{ ucfirst($role->nom) }} </span>
+                                <input type="checkbox" name="roles[]" id="{{ $role->id }}" value="{{ $role->id }}"
+                                    @foreach ($user->roles as $userRole)
+                                        @if ($userRole->id == $role->id)
+                                            checked
+                                        @endif
+                                    @endforeach>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        @endforeach
                     </div>
                 </form>
             </div>

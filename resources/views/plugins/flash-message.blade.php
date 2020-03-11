@@ -41,7 +41,6 @@
 @if ($errors->any())
 <div class="row">
     <div class="col">
-        @dump($errors)
         <div class="alert alert-card alert-danger" role="alert"><strong class="text-capitalize">Merci de vérifier les erreurs</strong>
             <button class="close" type="button" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         </div>

@@ -23,4 +23,4 @@ Route::get('/', 'HomeController@index')->name('index');
 Route::get('/home', 'HomeController@dashboard')->name('home');
 
 Route::resource('user', 'UserController');
-Route::post('/user/{id}/status', 'UserController@majStatus')->name('user.maj');
+Route::post('/user/{user}/status', 'UserController@majStatus')->name('user.maj');

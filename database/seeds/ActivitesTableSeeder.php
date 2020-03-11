@@ -1,5 +1,6 @@
 <?php
 
+use App\Activite;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -12,6 +13,8 @@ class ActivitesTableSeeder extends Seeder
      */
     public function run()
     {
+        Activite::truncate();
+
         DB::table('activites')->insert([
             'nom' => 'Sans activité',
             'tarif' => 28

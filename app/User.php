@@ -6,6 +6,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use PhpParser\Node\Expr\FuncCall;
 
 class User extends Authenticatable
 {
@@ -58,6 +59,25 @@ class User extends Authenticatable
         return \Carbon\Carbon::parse($this->naissance_at)->format('d/m/Y');
     }
 
+
+    public function addRole($nomRole)
+    {
+        $role = Role::where('nom', $nomRole)->first();
+
+        if($role) {
+            $this->roles()->attach($role);
+        }
+    }
+
+    public function remRole($nomRole)
+    {
+        $role = Role::where('nom', $nomRole)->first();
+
+        if($role) {
+            $this->roles()->detach($role);
+        }
+    }
+
     /**
      * ----------------------- RELATIONS
      */
@@ -70,5 +90,13 @@ class User extends Authenticatable
     public function reglements()
     {
         return $this->hasMany('App\Reglement');
+    }
+
+    public function roles() {
+        return $this->belongsToMany('App\Role');
+    }
+
+    public function saisons() {
+        return $this->belongsToMany('App\Saison');
     }
 }

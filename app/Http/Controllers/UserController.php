@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Mail\SuscribeMail;
+use App\Role;
 use App\Rules\Telephone;
+use App\Saison;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -46,6 +48,8 @@ class UserController extends Controller
         $this->storePhoto($user);
         $this->storeCertif($user);
         $this->initPassword($user);
+
+        $this->addRole('adherent');
 
         Mail::to('test@test.com')->send(new SuscribeMail($user));
 
@@ -114,12 +118,49 @@ class UserController extends Controller
 
     public function majStatus(User $user)
     {
-        $data = request()->validate([
-            'doc_check'       => 'sometimes|digits:1',
-            'licence_check'   => 'sometimes|digits:1',
-            'licence'         => 'required']);
+        $roles = Role::all();
+        $saison = Saison::getActualSaison();
+        $userRoles = array();
 
-        dd($data);
+        $data = request()->validate([
+            'doc_check'     => 'sometimes|digits:1',
+            'licence_check' => 'sometimes|digits:1',
+            'licence'       => 'sometimes',
+            'roles.*'       => 'sometimes|digits:1']);
+
+            if(isset($data['doc_check'])) {
+                $user->saisons()->syncWithoutDetaching($saison);
+            } else {
+                $user->saisons()->detach($saison);
+            }
+
+            if($user->licence_at) {
+                $user->licence_at = null;
+            }
+            if(isset($data['licence_check'])) {
+                if($data['licence_check'] == 1) {
+                    $user->licence_at = now();
+                }
+            }
+
+            if($user->licence) {
+                $user->licence = null;
+            }
+            if(isset($data['licence'])) {
+                $user->licence = $data['licence'];
+            }
+
+            if(isset($data['roles'])) {
+                if(is_array($data['roles'])) {
+                    $userRoles = $data['roles'];
+                }
+            }
+
+            $user->save();
+            $user->roles()->sync($userRoles);
+
+
+        return redirect()->route('user.show', $user)->with('success', 'Informations modifiées');
     }
 
     private function validator() {
@@ -174,4 +215,5 @@ class UserController extends Controller
             'password' => implode($pass)
         ]); //turn the array into a string
     }
+
 }
