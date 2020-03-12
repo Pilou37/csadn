@@ -7,9 +7,11 @@ use App\Role;
 use App\Rules\Telephone;
 use App\Saison;
 use App\User;
+//use Illuminate\Auth\Access\Gate;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Gate;
 
 class UserController extends Controller
 {
@@ -21,8 +23,13 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::with('activite')->get();
-
+        if(Gate::allows('manage-users')) {
+            $users = User::with('activite')->get();
+        } elseif (Gate::allows('manage-activite')) {
+            $users = User::with('activite')->where('activite_id', auth()->user()->activite_id)->get();
+        } else {
+            return redirect()->route('index')->with('error', 'Vous n\'avez pas l\'autorisation.');
+        }
         return view('user.liste')->with('users', $users);
     }
 
@@ -55,7 +62,7 @@ class UserController extends Controller
 
         //$request->session()->flash('success', 'C\'est un succès');
 
-        return redirect('user')->with('success', 'Adhérent créé');
+        return redirect()->route('user.show', $user)->with('success', 'Adhérent créé');
     }
 
     /**
@@ -66,6 +73,10 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
+        if(Gate::denies('manage-account', $user)) {
+            return redirect()->route('index')->with('error', 'Vous n\'avez pas l\'autorisation.');
+        }
+
         return view('user.show')->with('user', $user);
     }
 
@@ -77,6 +88,10 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
+        if(Gate::denies('edit-users')) {
+            return view('index');
+        }
+
         return view('user.form')->with('user', $user);
     }
 
@@ -100,7 +115,7 @@ class UserController extends Controller
 
         //$request->session()->flash('success', 'C\'est un succès');
 
-        return redirect('user')->with('success', 'Informations modifiées');
+        return redirect()->route('user.show', $user)->with('success', 'Informations modifiées');
     }
 
     /**
@@ -111,6 +126,11 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
+        if(Gate::denies('delete-users')) {
+            return view('index');
+        }
+
+
         $user->delete();
 
         return redirect('user');

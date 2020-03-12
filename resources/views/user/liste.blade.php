@@ -32,21 +32,13 @@
                     </thead>
                     <tbody>
                         @foreach ($users as $user)
+
                         <tr>
                             <td>{{$user->nom}}</td>
                             <td>{{$user->prenom}}</td>
                             <td>{{$user->activite->nom}}</td>
                             <td>{{$user->tel}}</td>
-                            @if ($user->licence_at)
-                            <td><span class="badge badge-success">OK</span></td>
-                            @else
-                                @if ($user->validation_at)
-                                <td><span class="badge badge-warning">Attente sygelic</span></td>
-                                @else
-                                <td><span class="badge badge-danger">Attente validation</span></td>
-                                @endif
-                            @endif
-
+                            <td><span class="badge badge-{{$user->getSouscribeStatus()["class"]}}">{{$user->getSouscribeStatus()["mess"]}}</span></td>
                             <td>
                                 <a class="text-success mr-2" href="{{route('user.show',$user)}}"><i class="nav-icon i-ID-2 font-weight-bold"></i></a>
                                 <a class="text-warning mr-2" href="{{route('user.edit',$user)}}"><i class="nav-icon i-Pen-2 font-weight-bold"></i></a>

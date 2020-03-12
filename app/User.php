@@ -59,6 +59,25 @@ class User extends Authenticatable
         return \Carbon\Carbon::parse($this->naissance_at)->format('d/m/Y');
     }
 
+    public function getSouscribeStatus() {
+        if($this->validation_at) {
+            $actualSaisonId = Saison::getActualSaison()->id;
+            if($this->saisons()->where('saisons.id', $actualSaisonId)->first()) {
+                    return ['class' => 'success',
+                            'mess' => 'OK',
+                            'pourcent' => 100];
+            } else {
+                return ['class' => 'warning',
+                        'mess' => 'Attente sygelic',
+                        'pourcent' => 75];
+            }
+        } else {
+            return ['class' => 'danger',
+                    'mess' => 'Attente validation',
+                    'pourcent' => 50];
+        }
+    }
+
 
     public function addRole($nomRole)
     {
@@ -76,6 +95,26 @@ class User extends Authenticatable
         if($role) {
             $this->roles()->detach($role);
         }
+    }
+
+    public function isOwner($owner)
+    {
+        return $this->id == $owner->id;
+    }
+
+    public function isManager()
+    {
+        return $this->roles()->where('nom', 'responsable')->first();
+    }
+
+    public function isAdmin()
+    {
+        return $this->roles()->where('nom', 'admin')->first();
+    }
+
+    public function hasAnyRole(array $roles)
+    {
+        return $this->roles()->whereIn('nom', $roles)->first();
     }
 
     /**

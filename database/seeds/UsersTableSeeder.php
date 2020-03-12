@@ -28,6 +28,12 @@ class UsersTableSeeder extends Seeder
         //$admin->roles()->attach($adminRole);
         $admin->save();
 
+        $user = User::find(2);
+        $user->email = 'user@user.fr';
+        //$admin->addRole('admin');
+        //$admin->roles()->attach($adminRole);
+        $user->save();
+
 
     }
 }
