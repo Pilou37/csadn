@@ -103,11 +103,6 @@ class User extends Authenticatable
         return $this->id == $owner->id;
     }
 
-    public function isManager()
-    {
-        return $this->roles()->where('nom', 'responsable')->first();
-    }
-
     public function isAdmin()
     {
         return $this->roles()->where('nom', 'admin')->first();

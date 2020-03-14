@@ -11,7 +11,7 @@
 @if ($message = Session::get('error'))
 <div class="row">
     <div class="col">
-        <div class="alert alert-card alert-danger" role="alert"><strong class="text-capitalize">{{ $message }}</strong>
+        <div class="alert alert-card alert-danger text-center" role="alert"><strong>{{ $message }}</strong>
             <button class="close" type="button" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         </div>
     </div>

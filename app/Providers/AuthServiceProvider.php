@@ -25,7 +25,7 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        Gate::define('manage-account', function ($user, $owner) {
+        Gate::define('proprietaire', function ($user, $owner) {
             if($user->isOwner($owner) || $user->isAdmin()) {
                     return true;
             } else { return false; }
@@ -34,19 +34,15 @@ class AuthServiceProvider extends ServiceProvider
 
 
         // ---------------- ACCES ---------------------
-        Gate::define('manage-users', function ($user) {
+        Gate::define('secretariat', function ($user) {
+            return $user->hasAnyRole(['secretariat','admin']);
+        });
+
+        Gate::define('responsable-section', function ($user) {
             return $user->hasAnyRole(['responsable','secretariat','admin']);
         });
 
-        Gate::define('manage-activite', function ($user) {
-            return $user->isManager();
-        });
-
-        Gate::define('edit-users', function ($user) {
-            return $user->isAdmin();
-        });
-
-        Gate::define('delete-users', function ($user) {
+        Gate::define('administrateur', function ($user) {
             return $user->isAdmin();
         });
     }

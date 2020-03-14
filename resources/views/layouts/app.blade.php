@@ -153,7 +153,7 @@
                     <li class="nav-item" data-item="adherents"><a class="nav-item-hold" href="#"><i class="nav-icon i-Library"></i><span class="nav-text">Adhérents</span></a>
                         <div class="triangle"></div>
                     </li>
-                    @can('manage-users')
+                    @can('responsable-section')
                     <li class="nav-item" data-item="administration"><a class="nav-item-hold" href="#"><i class="nav-icon i-Suitcase"></i><span class="nav-text">Administration</span></a>
                         <div class="triangle"></div>
                     </li>
@@ -166,7 +166,7 @@
             <div class="sidebar-left-secondary rtl-ps-none" data-perfect-scrollbar="" data-suppress-scroll-x="true">
                 <!-- Submenu Dashboards-->
                 <ul class="childNav" data-parent="adherents">
-                    @can('manage-users')<li class="nav-item"><a href="{{ route('user.create')}}"><i class="nav-icon i-Add-User"></i><span class="item-name">Rré-inscription</span></a></li>@endcan
+                    @can('secretariat')<li class="nav-item"><a href="{{ route('user.create')}}"><i class="nav-icon i-Add-User"></i><span class="item-name">Rré-inscription</span></a></li>@endcan
                     @auth <li class="nav-item"><a href="{{ route('user.show', auth()->user())}}"><i class="nav-icon i-ID-3"></i><span class="item-name">Voir mon profil</span></a></li>@endauth
                 </ul>
                 <ul class="childNav" data-parent="administration">

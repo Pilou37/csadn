@@ -13,28 +13,40 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Gate;
 
+use Illuminate\Http\UploadedFile as File;
+use Illuminate\Http\UploadedFile;
+
 class UserController extends Controller
 {
 
+// ----------------------------- CRUD -------------------------------------
+
     /**
-     * Display a listing of the resource.
+     * Affiche la liste des adhérents en fonction des droits
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        if(Gate::allows('manage-users')) {
+
+        if(Gate::allows('secretariat'))
+        {
             $users = User::with('activite')->get();
-        } elseif (Gate::allows('manage-activite')) {
-            $users = User::with('activite')->where('activite_id', auth()->user()->activite_id)->get();
-        } else {
-            return redirect()->route('index')->with('error', 'Vous n\'avez pas l\'autorisation.');
         }
+        elseif (Gate::allows('responsable-section'))
+        {
+            $users = User::with('activite')->where('activite_id', auth()->user()->activite_id)->get();
+        }
+        else
+        {
+            return $this->unauthorized();
+        }
+
         return view('user.liste')->with('users', $users);
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Affichage du formulaire de pré-inscription
      *
      * @return \Illuminate\Http\Response
      */
@@ -44,7 +56,7 @@ class UserController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Enregistrement de l'adhérent
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -56,8 +68,6 @@ class UserController extends Controller
         $this->storeCertif($user);
         $this->initPassword($user);
 
-        $this->addRole('adherent');
-
         Mail::to('test@test.com')->send(new SuscribeMail($user));
 
         //$request->session()->flash('success', 'C\'est un succès');
@@ -66,37 +76,47 @@ class UserController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Visualisation des informations d'un adhérent
      *
      * @param  \App\User  $user
      * @return \Illuminate\Http\Response
      */
     public function show(User $user)
     {
-        if(Gate::denies('manage-account', $user)) {
-            return redirect()->route('index')->with('error', 'Vous n\'avez pas l\'autorisation.');
+        if(Gate::allows('proprietaire', $user))
+        {
+            return view('user.show')->with('user', $user);
+        }
+        else
+        {
+            return $this->unauthorized();
         }
 
-        return view('user.show')->with('user', $user);
+
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Formulaire pour l'édition des informations d'un adhérent
      *
      * @param  \App\User  $user
      * @return \Illuminate\Http\Response
      */
     public function edit(User $user)
     {
-        if(Gate::denies('edit-users')) {
-            return view('index');
+        if(Gate::allows('proprietaire', $user))
+        {
+            return view('user.form')->with('user', $user);
+        }
+        else
+        {
+            return $this->unauthorized();
         }
 
-        return view('user.form')->with('user', $user);
+
     }
 
     /**
-     * Update the specified resource in storage.
+     * Mise à jour du profil de l'adhérent
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\User  $user
@@ -104,14 +124,13 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        $user->fill($this->validator());
-        $this->storePhoto($user);
-        $this->storeCertif($user);
-        $this->initPassword($user);
+        $data = $this->validator();
+
+        $user->fill($data);
+        if(isset($data['photo'])) { $this->storePhoto($user, $data['photo']); }
+        if(isset($data['certif'])) { $this->storeCertif($user, $data['certif']); }
 
         $user->save();
-
-        //Mail::to('test@test.com')->send(new SuscribeMail($user));
 
         //$request->session()->flash('success', 'C\'est un succès');
 
@@ -119,28 +138,33 @@ class UserController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Suppression de l'adhérent
      *
      * @param  \App\User  $user
      * @return \Illuminate\Http\Response
      */
     public function destroy(User $user)
     {
-        if(Gate::denies('delete-users')) {
-            return view('index');
+        if(Gate::allows('administrateur')) {
+            $user->delete();
+            return redirect()->route('user.index')->with('success', 'Adhérent supprimé');
         }
-
-
-        $user->delete();
-
-        return redirect('user');
+        else
+        {
+            return $this->unauthorized();
+        }
     }
+
+    /**
+     * Mise a jour des status des adhérents
+     *
+     * @param  \App\User  $user
+     * @return \Illuminate\Http\Response
+     */
 
     public function majStatus(User $user)
     {
-        $roles = Role::all();
-        $saison = Saison::getActualSaison();
-        $userRoles = array();
+        if(Gate::denies('administrateur')) { return $this->unauthorized(); }
 
         $data = request()->validate([
             'doc_check'     => 'sometimes|digits:1',
@@ -148,41 +172,52 @@ class UserController extends Controller
             'licence'       => 'sometimes',
             'roles.*'       => 'sometimes|digits:1']);
 
-            if(isset($data['licence_check'])) {
-                $user->saisons()->syncWithoutDetaching($saison);
-            } else {
-                $user->saisons()->detach($saison);
-            }
+        // Boutton "Dossier complet"
+        $user->validation_at = null;
 
-            if($user->validation_at) {
-                $user->validation_at = null;
+        if(isset($data['doc_check'])) {
+            if($data['doc_check'] == 1) {
+                $user->validation_at = now();
             }
-            if(isset($data['doc_check'])) {
-                if($data['doc_check'] == 1) {
-                    $user->validation_at = now();
-                }
-            }
+        }
 
-            if($user->licence) {
-                $user->licence = null;
-            }
-            if(isset($data['licence'])) {
-                $user->licence = $data['licence'];
-            }
+        // Boutton "Licence saisie"
+        $saison = Saison::getActualSaison();
 
-            if(isset($data['roles'])) {
-                if(is_array($data['roles'])) {
-                    $userRoles = $data['roles'];
-                }
+        if(isset($data['licence_check'])) {
+            $user->saisons()->syncWithoutDetaching($saison);
+        } else {
+            $user->saisons()->detach($saison);
+        }
+
+        // Champ "Numéro de licence"
+        $user->licence = null;
+
+        if(isset($data['licence'])) {
+            $user->licence = $data['licence'];
+        }
+
+        // Boutton "Fonctions"
+        $userRoles = array();
+
+        if(isset($data['roles'])) {
+            if(is_array($data['roles'])) {
+                $userRoles = $data['roles'];
             }
+        }
 
-            $user->save();
-            $user->roles()->sync($userRoles);
-
+        $user->save();
+        $user->roles()->sync($userRoles);
 
         return redirect()->route('user.show', $user)->with('success', 'Informations modifiées');
     }
 
+    /**
+     * Filtres pour validation inscription et mise à jour
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
     private function validator() {
         return request()->validate([
             'genre'         => 'required|digits_between:1,2',
@@ -203,22 +238,36 @@ class UserController extends Controller
         ]);
     }
 
-    private function storePhoto(User $user)
+    /**
+     * Sauvegarde photo adhérent
+     *
+     * @param  \App\User  $user
+     * @param  \Illuminate\Http\UploadedFile  $photo
+     * @return \Illuminate\Http\Response
+     */
+    private function storePhoto(User $user, File $photo)
     {
-        if(request('photo')) {
-            $filename = 'ident_'.$user->id.'.'.request('photo')->clientExtension();
+        if($photo) {
+            $filename = 'ident_'.$user->id.'.'.$photo->clientExtension();
             $user->update([
-                'photo' => request('photo')->storeAs('photo_identite', $filename, 'public')
+                'photo' => $photo->storeAs('photo_identite', $filename, 'public')
             ]);
         }
     }
 
-    private function storeCertif(User $user)
+    /**
+     * Sauvegarde certificat adhérent
+     *
+     * @param  \App\User  $user
+     * @param  \Illuminate\Http\UploadedFile  $photo
+     * @return \Illuminate\Http\Response
+     */
+    private function storeCertif(User $user, File $certif)
     {
-        if(request('certif')) {
-            $filename = 'certif_'.$user->id.'.'.request('certif')->clientExtension();
+        if($certif) {
+            $filename = 'certif_'.$user->id.'.'.$certif->clientExtension();
             $user->update([
-                'certif' => request('certif')->storeAs('certificats', $filename, 'public')
+                'certif' => $certif->storeAs('certificats', $filename, 'public')
             ]);
         }
     }
