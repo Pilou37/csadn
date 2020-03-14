@@ -2,6 +2,7 @@
 
 namespace App\Mail;
 
+use App\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
@@ -16,9 +17,15 @@ class PasswordMail extends Mailable
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(User $user)
     {
-        //
+        $this->data_mail = [
+            'adherent' => $user->prenom.' '.$user->nom,
+            'email' => $user->email,
+            'password' => $user->password,
+            'url' => route('login')
+        ];
+        $this->subject('Vos données de connexion');
     }
 
     /**
@@ -28,6 +35,6 @@ class PasswordMail extends Mailable
      */
     public function build()
     {
-        return $this->markdown('emails.password');
+        return $this->markdown('emails.password',$this->data_mail);
     }
 }

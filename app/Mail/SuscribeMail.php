@@ -27,6 +27,7 @@ class SuscribeMail extends Mailable
             'password' => $user->password,
             'url' => route('login')
         ];
+        $this->subject('Votre pré-inscription au CSADN');
     }
 
     /**

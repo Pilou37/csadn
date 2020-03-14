@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\PasswordMail;
 use App\Mail\SuscribeMail;
 use App\Role;
 use App\Rules\Telephone;
@@ -63,12 +64,14 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        $user = User::create($this->validator());
-        $this->storePhoto($user);
-        $this->storeCertif($user);
+        $data = $this->validator();
+
+        $user = User::create($data);
+        if(isset($data['photo'])) { $this->storePhoto($user, $data['photo']); } //Stockage photo
+        if(isset($data['certif'])) { $this->storeCertif($user, $data['certif']); } //Stockage certificat
         $this->initPassword($user);
 
-        Mail::to('test@test.com')->send(new SuscribeMail($user));
+        Mail::to($user->email)->send(new SuscribeMail($user));
 
         //$request->session()->flash('success', 'C\'est un succès');
 
@@ -127,8 +130,8 @@ class UserController extends Controller
         $data = $this->validator();
 
         $user->fill($data);
-        if(isset($data['photo'])) { $this->storePhoto($user, $data['photo']); }
-        if(isset($data['certif'])) { $this->storeCertif($user, $data['certif']); }
+        if(isset($data['photo'])) { $this->storePhoto($user, $data['photo']); } //Stockage photo
+        if(isset($data['certif'])) { $this->storeCertif($user, $data['certif']); }//Stockage certificat
 
         $user->save();
 
@@ -272,6 +275,12 @@ class UserController extends Controller
         }
     }
 
+    /**
+     * Initialisation d'un mot de passe
+     *
+     * @param  \App\User  $user
+     * @return \Illuminate\Http\Response
+     */
     private function initPassword(User $user) {
         $alphabet = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
         $pass = array(); //remember to declare $pass as an array
@@ -283,6 +292,8 @@ class UserController extends Controller
         $user->update([
             'password' => implode($pass)
         ]); //turn the array into a string
+
+        Mail::to($user->email)->send(new PasswordMail($user));
     }
 
 }

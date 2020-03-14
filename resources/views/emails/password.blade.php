@@ -1,12 +1,16 @@
 @component('mail::message')
-# Introduction
+# Vos données de connexion au Club Sportif et Artistique
 
-The body of your message.
+Bonjour <strong>{{ $adherent }}</strong> </br>
 
-@component('mail::button', ['url' => ''])
-Button Text
+Voici vos données de connexion :</br>
+- Login : <strong>{{ $email }}</strong> </br>
+- Mot de passe : <strong>{{ $password }}</strong> </br>
+
+@component('mail::button', ['url' => $url])
+Se connecter
 @endcomponent
 
-Thanks,<br>
-{{ config('app.name') }}
+Sportivement,<br>
+Le bureau du CSADN
 @endcomponent
