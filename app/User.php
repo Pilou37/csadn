@@ -60,6 +60,7 @@ class User extends Authenticatable
     }
 
     public function getSouscribeStatus() {
+
         if($this->validation_at) {
             $actualSaisonId = Saison::getActualSaison()->id;
             if($this->saisons()->where('saisons.id', $actualSaisonId)->first()) {

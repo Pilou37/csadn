@@ -148,18 +148,18 @@ class UserController extends Controller
             'licence'       => 'sometimes',
             'roles.*'       => 'sometimes|digits:1']);
 
-            if(isset($data['doc_check'])) {
+            if(isset($data['licence_check'])) {
                 $user->saisons()->syncWithoutDetaching($saison);
             } else {
                 $user->saisons()->detach($saison);
             }
 
-            if($user->licence_at) {
-                $user->licence_at = null;
+            if($user->validation_at) {
+                $user->validation_at = null;
             }
-            if(isset($data['licence_check'])) {
-                if($data['licence_check'] == 1) {
-                    $user->licence_at = now();
+            if(isset($data['doc_check'])) {
+                if($data['doc_check'] == 1) {
+                    $user->validation_at = now();
                 }
             }
 

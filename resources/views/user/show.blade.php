@@ -21,9 +21,9 @@
                             <label class="switch switch-success mr-3 @error('doc_check') text-danger @enderror">
                                 <span>Dossier complet </span>
                                 <?php $saison = \App\Saison::getActualSaison() ?>
-                                <input type="checkbox" name="doc_check" id="doc_check" value="{{$saison->id}}"
-                                @if ($user->saisons->find($saison))
-                                    checked
+                                <input type="checkbox" name="doc_check" id="doc_check" value="1"
+                                @if ($user->validation_at)
+                                checked
                                 @endif>
                                 <span class="slider"></span>
                             </label>
@@ -34,9 +34,10 @@
                         <div class="col-6 col-md-3">
                             <label class="switch switch-success mr-3 @error('licence_check') text-danger @enderror">
                                 <span>Licence saisie</span>
-                                <input type="checkbox" name="licence_check" id="licence_check" value="1" @if ($user->licence_at)
-                                checked
-                            @endif>
+                                <input type="checkbox" name="licence_check" id="licence_check" value="{{$saison->id}}"
+                                @if ($saison = $user->saisons->find($saison->id))
+                                    checked
+                                @endif>
                                 <span class="slider"></span>
                             </label>
                             <div class="invalid-feedback">
