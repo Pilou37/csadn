@@ -32,6 +32,20 @@ class AuthServiceProvider extends ServiceProvider
         });
 
 
+        Gate::define('edit-user', function ($user, $owner) {
+            if($user->isOwner($owner) || $user->isSupervisor($owner)) {
+                return true;
+            }
+            elseif ($user->hasAnyRole(['secretariat','admin']))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        });
+
 
         // ---------------- ACCES ---------------------
         Gate::define('secretariat', function ($user) {

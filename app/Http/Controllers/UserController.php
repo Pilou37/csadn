@@ -32,7 +32,7 @@ class UserController extends Controller
 
         if(Gate::allows('secretariat'))
         {
-            $users = User::with('activite')->get();
+            $users = User::with(['activite','roles','saisons'])->get();
         }
         elseif (Gate::allows('responsable-section'))
         {
@@ -106,7 +106,7 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        if(Gate::allows('proprietaire', $user))
+        if(Gate::allows('edit-user', $user))
         {
             return view('user.form')->with('user', $user);
         }

@@ -79,7 +79,6 @@ class User extends Authenticatable
         }
     }
 
-
     public function addRole($nomRole)
     {
         $role = Role::where('nom', $nomRole)->first();
@@ -101,6 +100,14 @@ class User extends Authenticatable
     public function isOwner($owner)
     {
         return $this->id == $owner->id;
+    }
+
+    public function isSupervisor($owner)
+    {
+        if($this->roles()->where('nom', 'responsable')->first()) {
+            return $this->activite_id == $owner->activite_id;
+        }
+        return false;
     }
 
     public function isAdmin()

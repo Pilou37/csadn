@@ -16,6 +16,9 @@
                 <h4 class="card-title mb-3">Profil de {{$user->nom}} {{$user->prenom}}</h4>
                 <form action="{{route('user.maj', $user)}}" method="POST">
                     @csrf
+                    @can('secretariat')
+
+
                     <div class="row">
                         <div class="col-6 col-md-3 form-group">
                             <label class="switch switch-success mr-3 @error('doc_check') text-danger @enderror">
@@ -54,6 +57,8 @@
                             <button type="submit" class="btn  btn-primary btn-block m-1">Valider</button>
                         </div>
                     </div>
+                    @endcan
+                    @can('administrateur')
                     <div class="row mt-4">
                         <div class="col-6 col-md-2">
                             Fonctions :
@@ -74,6 +79,7 @@
                         </div>
                         @endforeach
                     </div>
+                    @endcan
                 </form>
             </div>
             <div class="card-body">
@@ -121,15 +127,19 @@
                     </div>
                 </div>
                 <hr>
+                @can('secretariat')
                     <a href="{{ route('user.destroy',$user) }}"
-                        onclick="event.preventDefault();
-                        document.getElementById('delete-form-{{$user->id}}').submit();"
-                        class="btn  btn-danger m-1 footer-delete-left">Supprimer l'adhérent</a>
-                    <a href="{{route('user.edit',$user)}}" class="btn  btn-warning m-1 footer-delete-right">Modifier les informations</a>
+                    onclick="event.preventDefault();
+                    document.getElementById('delete-form-{{$user->id}}').submit();"
+                    class="btn  btn-danger m-1 footer-delete-left">Supprimer l'adhérent</a>
                     <form id="delete-form-{{$user->id}}" action="{{ route('user.destroy',$user) }}" method="POST" style="display: none;">
                         @method('DELETE')
                         @csrf
                     </form>
+                @endcan
+                @can('edit-user', $user)
+                    <a href="{{route('user.edit',$user)}}" class="btn  btn-warning m-1 footer-delete-right">Modifier les informations</a>
+                @endcan
 
             </div>
 
