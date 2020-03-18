@@ -22,6 +22,7 @@ Auth::routes();
 // Utilisateur
 Route::get('/', 'HomeController@index')->name('index');
 Route::get('/home', 'HomeController@dashboard')->name('home');
+Route::get('/saison/{saisonId}', 'UserController@showUserSaison')->name('user.saison');
 
 Route::resource('user', 'UserController');
 Route::post('/user/{user}/status', 'UserController@majStatus')->name('user.maj');

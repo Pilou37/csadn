@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Activite;
+use App\Http\Controllers\Auth\LoginController;
 use App\Mail\PasswordMail;
 use App\Mail\SuscribeMail;
 use App\Role;
@@ -16,6 +18,8 @@ use Illuminate\Support\Facades\Gate;
 
 use Illuminate\Http\UploadedFile as File;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
@@ -29,14 +33,31 @@ class UserController extends Controller
      */
     public function index()
     {
+        /*
+        $saison = DB::table('saisons')
+                    ->select('users.activite_id as activite','saisons.nom as saison', DB::raw('COUNT(users.id) as user'))
+                    ->leftJoin('saison_user', 'saisons.id', '=', 'saison_user.saison_id')
+                    ->leftJoin('users', 'saison_user.user_id', '=', 'users.id')
+                    ->groupBy('users.activite_id')
+                    ->having('saisons.nom', '2019/2020')
+                    ->get();
+        */
+
 
         if(Gate::allows('secretariat'))
         {
-            $users = User::with(['activite','roles','saisons'])->get();
+            $users = User::whereHas('saisons', function ($query) {
+                            $query->where('nom', '2019/2020');  })
+                            ->with(['activite','roles','saisons'])
+                            ->get();
         }
         elseif (Gate::allows('responsable-section'))
         {
-            $users = User::with('activite')->where('activite_id', auth()->user()->activite_id)->get();
+            $users = User::whereHas('saisons', function ($query) {
+                            $query->where('nom', '2019/2020');  })
+                            ->with(['activite','roles','saisons'])
+                            ->where('activite_id', auth()->user()->activite_id)
+                            ->get();
         }
         else
         {
@@ -66,14 +87,29 @@ class UserController extends Controller
     {
         $data = $this->validator();
 
-        $user = User::create($data);
+        $user = User::firstOrNew(
+            ['nom' => $data['nom']],
+            ['prenom' => $data['prenom']],
+            ['naissance_at' => $data['naissance_at']]
+        );
+
+        $user->fill($data);
+        $user->save();
+
         if(isset($data['photo'])) { $this->storePhoto($user, $data['photo']); } //Stockage photo
         if(isset($data['certif'])) { $this->storeCertif($user, $data['certif']); } //Stockage certificat
-        $this->initPassword($user);
+        $password = $this->initPassword();
+        if(isset( $password)) { $this->storePassword($user,  $password); } //Stockage mot de passe
 
         Mail::to($user->email)->send(new SuscribeMail($user));
 
         //$request->session()->flash('success', 'C\'est un succès');
+        //dd($user);
+
+        $request->merge(['password' => $password]);
+
+        $loginControl = new LoginController();
+        $loginControl->login($request);
 
         return redirect()->route('user.show', $user)->with('success', 'Adhérent créé');
     }
@@ -94,8 +130,6 @@ class UserController extends Controller
         {
             return $this->unauthorized();
         }
-
-
     }
 
     /**
@@ -156,6 +190,38 @@ class UserController extends Controller
         {
             return $this->unauthorized();
         }
+    }
+
+        /**
+     * Affiche la liste des adhérents en fonction des droits
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function showUserSaison($saisonId)
+    {
+
+        if(Gate::allows('secretariat'))
+        {
+            //dd($saisonId);
+            $users = User::AdherentsParSaison($saisonId)
+                            ->with(['activite','roles'])
+                            ->get();
+                            //dd($users);
+        }
+        elseif (Gate::allows('responsable-section'))
+        {
+            $users = User::whereHas('saisons', function ($query) {
+                            $query->where('id', $saisonId);  })
+                            ->with(['activite','roles','saisons'])
+                            ->where('activite_id', auth()->user()->activite_id)
+                            ->get();
+        }
+        else
+        {
+            return $this->unauthorized();
+        }
+
+        return view('user.liste')->with('users', $users);
     }
 
     /**
@@ -281,7 +347,21 @@ class UserController extends Controller
      * @param  \App\User  $user
      * @return \Illuminate\Http\Response
      */
-    private function initPassword(User $user) {
+    private function storePassword(User $user, string $password) {
+        $user->update([
+            'password' => Hash::make($password)
+        ]); //turn the array into a string
+
+        Mail::to($user->email)->send(new PasswordMail($user));
+    }
+
+    /**
+     * Initialisation d'un mot de passe
+     *
+     * @param  \App\User  $user
+     * @return \Illuminate\Http\Response
+     */
+    private function initPassword() {
         $alphabet = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
         $pass = array(); //remember to declare $pass as an array
         $alphaLength = strlen($alphabet) - 1; //put the length -1 in cache
@@ -289,11 +369,10 @@ class UserController extends Controller
             $n = rand(0, $alphaLength);
             $pass[] = $alphabet[$n];
         }
-        $user->update([
-            'password' => implode($pass)
-        ]); //turn the array into a string
 
-        Mail::to($user->email)->send(new PasswordMail($user));
+        return implode($pass);
     }
+
+
 
 }

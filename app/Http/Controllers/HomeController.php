@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Activite;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -23,7 +24,9 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('index');
+        $activites = Activite::NbAdherents()->get();
+
+        return view('index')->with('activites',$activites);
     }
 
     /**
@@ -33,6 +36,18 @@ class HomeController extends Controller
      */
     public function dashboard()
     {
+
+        return view('home');
+    }
+
+    /**
+     * Show the application dashboard.
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function administration()
+    {
+
         return view('home');
     }
 

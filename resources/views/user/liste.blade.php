@@ -38,7 +38,8 @@
                             <td>{{$user->prenom}}</td>
                             <td>{{$user->activite->nom}}</td>
                             <td>{{$user->tel}}</td>
-                            <td><span class="badge badge-{{$user->getSouscribeStatus()["class"]}}">{{$user->getSouscribeStatus()["mess"]}}</span></td>
+                            <?php $status = $user->getSouscribeStatus() ?>
+                            <td><span class="badge badge-{{$status["class"]}}">{{$status["mess"]}}</span></td>
                             <td>
                                 <a class="text-success mr-2" href="{{route('user.show',$user)}}"><i class="nav-icon i-ID-2 font-weight-bold"></i></a>
                                 <a class="text-warning mr-2" href="{{route('user.edit',$user)}}"><i class="nav-icon i-Pen-2 font-weight-bold"></i></a>

@@ -6,6 +6,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\DB;
 use PhpParser\Node\Expr\FuncCall;
 
 class User extends Authenticatable
@@ -62,8 +63,8 @@ class User extends Authenticatable
     public function getSouscribeStatus() {
 
         if($this->validation_at) {
-            $actualSaisonId = Saison::getActualSaison()->id;
-            if($this->saisons()->where('saisons.id', $actualSaisonId)->first()) {
+            $actualSaison = Saison::getNomActualSaison();
+            if($this->saisons()->where('saisons.nom', $actualSaison)->first()) {
                     return ['class' => 'success',
                             'mess' => 'OK',
                             'pourcent' => 100];
@@ -118,6 +119,31 @@ class User extends Authenticatable
     public function hasAnyRole(array $roles)
     {
         return $this->roles()->whereIn('nom', $roles)->first();
+    }
+
+    /**
+     * Scope a query to only include popular users.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeAdherentsParSaison($query, $saisonId)
+    {
+        /*
+        $saison = Saison::getActualSaison();
+
+        return $query->select('activites.*', DB::raw('ANY_VALUE(saisons.nom) as saison') , DB::raw('COUNT(users.id) as nb_adherents'))
+        ->rightJoin('users', 'activites.id', '=', 'users.activite_id')
+        ->rightJoin('saison_user', 'users.id', '=', 'saison_user.user_id')
+        ->rightJoin('saisons', 'saison_user.saison_id', '=', 'saisons.id')
+        ->groupBy('users.activite_id')
+        ->having('saison', $saison->nom);
+        */
+
+        return $query->select('users.*', DB::raw('saisons.id as saison'))
+        ->rightJoin('saison_user', 'users.id', '=', 'saison_user.user_id')
+        ->rightJoin('saisons', 'saison_user.saison_id', '=', 'saisons.id')
+        ->having('saison', $saisonId);
     }
 
     /**

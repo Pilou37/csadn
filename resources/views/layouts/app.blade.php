@@ -1,11 +1,12 @@
 <!DOCTYPE html>
-<html lang="en" dir="">
+<html lang="fr" dir="">
 
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Dashboard v4 | Gull Admin Template</title>
+    <title>CSADN | Espace adhérents</title>
+    <link href="{{ asset('images/fav_csadn.ico') }}" rel="shortcut icon" type="image/vnd.microsoft.icon" />
     <link href="https://fonts.googleapis.com/css?family=Nunito:300,400,400i,600,700,800,900" rel="stylesheet" />
     <link href="{{ asset('css/themes/lite-blue.min.css') }}" rel="stylesheet" />
     <link href="{{ asset('css/plugins/perfect-scrollbar.min.css') }}" rel="stylesheet" />
@@ -171,6 +172,20 @@
                 </ul>
                 <ul class="childNav" data-parent="administration">
                     <li class="nav-item"><a href="{{ route('user.index')}}"><i class="nav-icon i-ID-3"></i><span class="item-name">Liste des utilisateurs</span></a></li>
+                </ul>
+                <ul class="childNav" data-parent="administration">
+                    <li class="nav-item dropdown-sidemenu"><a href=""><i class="nav-icon i-ID-3"></i><span class="item-name">Saisons</span><i class="dd-arrow i-Arrow-Down"></i></a>
+                        <ul class="submenu">
+                            @if ($saisons = App\Saison::orderBy('nom', 'desc')->get())
+                                @foreach ($saisons as $saison)
+                                <li><a href="{{ route('user.saison', $saison->id)}}">{{ $saison->nom }}@if (App\Saison::getNomActualSaison() == $saison->nom)
+                                    <span class="badge badge-info m-2">Actuelle</span>
+                                @endif</a></li>
+                                @endforeach
+                            @endif
+
+                        </ul>
+                    </li>
                 </ul>
                 <ul class="childNav" data-parent="tresorerie">
                     <li class="nav-item"><a href="#"><i class="nav-icon i-Add-File"></i><span class="item-name">Sous-menu</span></a></li>
