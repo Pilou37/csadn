@@ -26,7 +26,7 @@ class CreateUsersTable extends Migration
             $table->string('ville');
             $table->string('tel');
             $table->string('email');
-            $table->string('photo')->nullable();
+            $table->string('photo')->default('photo_identite/no-image.png');
             $table->string('certif')->nullable();
             $table->date('certif_at')->nullable();
             $table->integer('origine');

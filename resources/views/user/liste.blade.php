@@ -31,6 +31,7 @@
                         </tr>
                     </thead>
                     <tbody>
+                        @if ($users[0]->id)
                         @foreach ($users as $user)
 
                         <tr>
@@ -54,6 +55,11 @@
                                 </form>
                             </tr>
                         @endforeach
+                        @else
+                        <tr>
+                            <td colspan="6">Aucun adhérent correspondant</td>
+                        </tr>
+                        @endif
                     </tbody>
                     <tfoot>
                         <tr>

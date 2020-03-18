@@ -34,11 +34,10 @@ $factory->define(User::class, function (FakerEn $faker) {
         'tel' => $fakerFr->serviceNumber,
         'email' => $faker->unique()->safeEmail,
         'email_verified_at' => $faker->dateTime(),
-        'photo' => 'photo_identite/no-image.png',
         'origine' => $faker->numberBetween(1, 4),
         'activite_id' => $faker->numberBetween(1, Activite::count()),
         'licence' => $faker->optional()->randomNumber(),
-        'validation_at' => $faker->optional()->dateTimeThisYear()/*,
+        'validation_at' => $faker->dateTimeThisYear()/*,
         'remember_token' => $faker->asciify('**********')*/
     ];
 });

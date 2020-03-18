@@ -46,16 +46,12 @@ class UserController extends Controller
 
         if(Gate::allows('secretariat'))
         {
-            $users = User::whereHas('saisons', function ($query) {
-                            $query->where('nom', '2019/2020');  })
-                            ->with(['activite','roles','saisons'])
+            $users = User::with(['activite','roles','saisons'])
                             ->get();
         }
         elseif (Gate::allows('responsable-section'))
         {
-            $users = User::whereHas('saisons', function ($query) {
-                            $query->where('nom', '2019/2020');  })
-                            ->with(['activite','roles','saisons'])
+            $users = User::with(['activite','roles','saisons'])
                             ->where('activite_id', auth()->user()->activite_id)
                             ->get();
         }

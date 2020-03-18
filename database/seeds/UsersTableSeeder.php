@@ -19,6 +19,7 @@ class UsersTableSeeder extends Seeder
 
         foreach($users as $user) {
             $user->reglements()->createMany(factory(App\Reglement::class, 2)->make()->toArray());
+            $user->saisons()->attach(rand(1,4));
         }
 
         //$adminRole = Role::where('nom', 'admin')->first();
