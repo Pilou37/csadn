@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateReglementsTable extends Migration
+class CreateRemisesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,10 @@ class CreateReglementsTable extends Migration
      */
     public function up()
     {
-        Schema::create('reglements', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->unsignedBigInteger('user_id');
-            $table->integer('valeur');
+        Schema::create('remises', function (Blueprint $table) {
+            $table->id();
             $table->integer('mode_id')->nullable();
-            $table->integer('recu_id')->nullable();
-            $table->integer('remise_id')->nullable();
+            $table->date('encaissement_at')->nullable();
             $table->timestamps();
         });
     }
@@ -31,6 +28,6 @@ class CreateReglementsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('reglements');
+        Schema::dropIfExists('remises');
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Carbon\Carbon;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -60,9 +61,19 @@ class User extends Authenticatable
         return \Carbon\Carbon::parse($this->naissance_at)->format('d/m/Y');
     }
 
-    public function getSouscribeStatus() {
+    public function getCertifAtShowAttribute()
+    {
+        if($this->certif_at) {
+            return \Carbon\Carbon::parse($this->certif_at)->format('d/m/Y');
+        } else {
+            return null;
+        }
 
-        if($this->validation_at) {
+    }
+
+    public function getSouscribeStatus() {
+            if(Saison::isInActualSaison($this->validation_at)) {
+                //dd($validation_at);
             $actualSaison = Saison::getNomActualSaison();
             if($this->saisons()->where('saisons.nom', $actualSaison)->first()) {
                     return ['class' => 'success',
@@ -71,12 +82,12 @@ class User extends Authenticatable
             } else {
                 return ['class' => 'warning',
                         'mess' => 'Attente sygelic',
-                        'pourcent' => 75];
+                        'pourcent' => 50];
             }
         } else {
-            return ['class' => 'danger',
-                    'mess' => 'Attente validation',
-                    'pourcent' => 50];
+            return ['class' => 'light',
+                    'mess' => 'Aucun',
+                    'pourcent' => 0];
         }
     }
 
@@ -97,6 +108,19 @@ class User extends Authenticatable
             $this->roles()->detach($role);
         }
     }
+
+    public function setLogin()
+    {
+        $i = 1;
+        $this->login = strtolower(str_replace(' ','-',$this->nom).".".substr($this->prenom, 0, 1));
+        while(User::where('login','=',$this->login)->count()>0)
+        {
+            $this->login = $this->login.$i;
+        }
+        ;
+    }
+
+    // -------  Vérification des droits --------------
 
     public function isOwner($owner)
     {

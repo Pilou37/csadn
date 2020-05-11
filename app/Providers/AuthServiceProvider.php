@@ -56,6 +56,14 @@ class AuthServiceProvider extends ServiceProvider
             return $user->hasAnyRole(['responsable','secretariat','admin']);
         });
 
+        Gate::define('comptabilite', function ($user) {
+            return $user->hasAnyRole(['comptabilite','admin']);
+        });
+
+        Gate::define('bureau', function ($user) {
+            return $user->hasAnyRole(['comptabilite','secretariat','admin']);
+        });
+
         Gate::define('administrateur', function ($user) {
             return $user->isAdmin();
         });

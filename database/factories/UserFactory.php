@@ -21,10 +21,15 @@ use Illuminate\Support\Str;
 $factory->define(User::class, function (FakerEn $faker) {
     $fakerFr = Faker\Factory::create('fr_FR');
     $max = Activite::count();
+    $user = new User();
+    $user->nom = $faker->firstName;
+    $user->prenom = $faker->lastName;
+    $user->newLogin();
     return [
         'genre' => $faker->numberBetween(1, 2),
-        'nom' => $faker->lastName,
-        'prenom' => $faker->firstName,
+        'nom' => $user->nom,
+        'prenom' => $user->prenom,
+        'login' => $user->login,
         'password' => bcrypt('12345678'), // password
         'naissance_at' => $faker->date('Y-m-d'),
         'naissance_lieu' => $faker->city,

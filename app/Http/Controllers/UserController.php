@@ -90,6 +90,7 @@ class UserController extends Controller
         );
 
         $user->fill($data);
+        $user->newLogin();
         $user->save();
 
         if(isset($data['photo'])) { $this->storePhoto($user, $data['photo']); } //Stockage photo
@@ -104,8 +105,12 @@ class UserController extends Controller
 
         $request->merge(['password' => $password]);
 
-        $loginControl = new LoginController();
-        $loginControl->login($request);
+        if(!auth()->user()) {
+            $loginControl = new LoginController();
+            $request->merge(['login' => $user->login]);
+            $loginControl->login($request);
+        }
+
 
         return redirect()->route('user.show', $user)->with('success', 'Adhérent créé');
     }
@@ -118,7 +123,7 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        if(Gate::allows('proprietaire', $user))
+        if(Gate::allows('edit-user', $user))
         {
             return view('user.show')->with('user', $user);
         }
@@ -178,7 +183,7 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        if(Gate::allows('administrateur')) {
+        if(Gate::allows('secretariat')) {
             $user->delete();
             return redirect()->route('user.index')->with('success', 'Adhérent supprimé');
         }
@@ -229,7 +234,7 @@ class UserController extends Controller
 
     public function majStatus(User $user)
     {
-        if(Gate::denies('administrateur')) { return $this->unauthorized(); }
+        if(Gate::denies('secretariat')) { return $this->unauthorized(); }
 
         $data = request()->validate([
             'doc_check'     => 'sometimes|digits:1',
@@ -262,19 +267,39 @@ class UserController extends Controller
             $user->licence = $data['licence'];
         }
 
-        // Boutton "Fonctions"
-        $userRoles = array();
+        // Sauvegarde des données
+        $user->save();
 
-        if(isset($data['roles'])) {
-            if(is_array($data['roles'])) {
-                $userRoles = $data['roles'];
+        // Mise à jour "Fonctions"
+        if(Gate::allows('administrateur')) {
+            $userRoles = array();
+
+            if(isset($data['roles'])) {
+                if(is_array($data['roles'])) {
+                    $userRoles = $data['roles'];
+                }
             }
+            $user->roles()->sync($userRoles);
         }
 
-        $user->save();
-        $user->roles()->sync($userRoles);
-
         return redirect()->route('user.show', $user)->with('success', 'Informations modifiées');
+    }
+
+            /**
+     * Affiche un message de confirmation pour la suppression
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function confirmation(User $user)
+    {
+        if(Gate::allows('secretariat', $user))
+        {
+            return view('user.confirmation')->with('user', $user);
+        }
+        else
+        {
+            return $this->unauthorized();
+        }
     }
 
     /**
@@ -288,6 +313,7 @@ class UserController extends Controller
             'genre'         => 'required|digits_between:1,2',
             'nom'           => 'required|string',
             'prenom'        => 'required|string',
+            'login'         => 'sometimes|string',
             'naissance_at'  => 'required|date',
             'naissance_lieu'=> 'required|string',
             'adresse'       => 'required|string',
@@ -348,7 +374,7 @@ class UserController extends Controller
             'password' => Hash::make($password)
         ]); //turn the array into a string
 
-        Mail::to($user->email)->send(new PasswordMail($user));
+        Mail::to($user->email)->send(new PasswordMail($user, $password));
     }
 
     /**

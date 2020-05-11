@@ -4,7 +4,7 @@
 Bonjour <strong>{{ $adherent }}</strong> </br>
 
 Voici vos données de connexion :</br>
-- Login : <strong>{{ $email }}</strong> </br>
+- Login : <strong>{{ $login }}</strong> </br>
 - Mot de passe : <strong>{{ $password }}</strong> </br>
 
 @component('mail::button', ['url' => $url])

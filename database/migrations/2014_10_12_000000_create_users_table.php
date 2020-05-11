@@ -18,6 +18,7 @@ class CreateUsersTable extends Migration
             $table->integer('genre');
             $table->string('nom');
             $table->string('prenom');
+            $table->string('login');
             $table->string('password')->nullable();
             $table->date('naissance_at');
             $table->string('naissance_lieu');

@@ -45,15 +45,14 @@
                                 <a class="text-success mr-2" href="{{route('user.show',$user)}}"><i class="nav-icon i-ID-2 font-weight-bold"></i></a>
                                 <a class="text-warning mr-2" href="{{route('user.edit',$user)}}"><i class="nav-icon i-Pen-2 font-weight-bold"></i></a>
                                 <!--<a class="text-danger mr-2" href="#"><i class="nav-icon i-Close-Window font-weight-bold"></i></a></td>-->
-                                <a class="text-danger mr-2" href="{{ route('user.destroy',$user) }}"
-                                            onclick="event.preventDefault();
-                                            document.getElementById('delete-form-{{$user->id}}').submit();"><i class="nav-icon i-Close-Window font-weight-bold"></i>
-                                </a></td>
-                                <form id="delete-form-{{$user->id}}" action="{{ route('user.destroy',$user) }}" method="POST" style="display: none;">
-                                    @method('DELETE')
-                                    @csrf
-                                </form>
-                            </tr>
+                                @can('secretariat')
+                                <a class="text-danger mr-2" href="{{route('user.confirmation',$user)}}" ><i class="nav-icon i-Close-Window font-weight-bold"></i></a>
+                                @endcan
+                                @can('comptabilite', $user)
+                                <a class="text-success mr-2" href="{{route('reglement.create',$user->id)}}"><i class="nav-icon i-Coins font-weight-bold"></i></a>
+                                @endcan
+                            </td>
+                        </tr>
                         @endforeach
                         @else
                         <tr>

@@ -17,12 +17,13 @@ class PasswordMail extends Mailable
      *
      * @return void
      */
-    public function __construct(User $user)
+    public function __construct(User $user, string $password)
     {
         $this->data_mail = [
             'adherent' => $user->prenom.' '.$user->nom,
+            'login' => $user->login,
             'email' => $user->email,
-            'password' => $user->password,
+            'password' => $password,
             'url' => route('login')
         ];
         $this->subject('Vos données de connexion');

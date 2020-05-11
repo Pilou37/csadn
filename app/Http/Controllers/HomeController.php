@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Activite;
+use App\Saison;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -24,9 +25,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $activites = Activite::NbAdherents()->get();
-
-        return view('index')->with('activites',$activites);
+        return view('index');
     }
 
     /**
@@ -36,8 +35,9 @@ class HomeController extends Controller
      */
     public function dashboard()
     {
+        $activites = Saison::NbAdherents()->get();
 
-        return view('home');
+        return view('home')->with('activites',$activites);
     }
 
     /**

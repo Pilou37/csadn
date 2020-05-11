@@ -25,5 +25,10 @@ Route::get('/home', 'HomeController@dashboard')->name('home');
 Route::get('/saison/{saisonId}', 'UserController@showUserSaison')->name('user.saison');
 
 Route::resource('user', 'UserController');
+Route::get('/user/{user}/confirmation', 'UserController@confirmation')->name('user.confirmation');
 Route::post('/user/{user}/status', 'UserController@majStatus')->name('user.maj');
+
+Route::get('/reglement/{user}/create', 'ReglementController@create')->name('reglement.create');
+Route::get('/reglement/{user}/{reglement}/edit', 'ReglementController@edit')->name('reglement.edit');
+Route::resource('reglement', 'ReglementController')->except(['create','edit']);
 

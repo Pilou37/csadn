@@ -1,22 +1,21 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">Dashboard</div>
+<div class="breadcrumb">
+    <h1 class="mr-2">Bienvenue sur l'interface de gestion des adhérents</h1>
+</div>
+<div class="separator-breadcrumb border-top"></div>
+<div class="row justify-content-center">
+    @foreach ($activites as $activite)
+    <div class="col-md-2">
 
-                <div class="card-body">
-                    @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
-                        </div>
-                    @endif
-
-                </div>
+        <div class="card card-icon mb-4">
+            <div class="card-header text-center">{{ $activite->nom }}</div>
+            <div class="card-body text-center"><i class="i-Add-User"></i><span class="lead text-22 ml-3">{{ $activite->nb_adherents }}</span>
             </div>
         </div>
     </div>
+    @endforeach
 </div>
+
 @endsection

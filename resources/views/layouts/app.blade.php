@@ -19,7 +19,7 @@
 
         <div class="main-header">
             <div>
-                <a href="{{ route('index')}}">
+                <a href="{{ route('home')}}">
                     <img src="{{ asset('images/logo.png') }}" alt="" height="60px;">
                 </a>
             </div>
@@ -159,15 +159,17 @@
                         <div class="triangle"></div>
                     </li>
                     @endcan
+                    @can('comptabilite')
                     <li class="nav-item" data-item="tresorerie"><a class="nav-item-hold" href="#"><i class="nav-icon i-Computer-Secure"></i><span class="nav-text">Trésorerie</span></a>
                         <div class="triangle"></div>
                     </li>
+                    @endcan
                 </ul>
             </div>
             <div class="sidebar-left-secondary rtl-ps-none" data-perfect-scrollbar="" data-suppress-scroll-x="true">
                 <!-- Submenu Dashboards-->
                 <ul class="childNav" data-parent="adherents">
-                    @can('secretariat')<li class="nav-item"><a href="{{ route('user.create')}}"><i class="nav-icon i-Add-User"></i><span class="item-name">Rré-inscription</span></a></li>@endcan
+                    @can('secretariat')<li class="nav-item"><a href="{{ route('user.create')}}"><i class="nav-icon i-Add-User"></i><span class="item-name">Nouvel adhérent</span></a></li>@endcan
                     @auth <li class="nav-item"><a href="{{ route('user.show', auth()->user())}}"><i class="nav-icon i-ID-3"></i><span class="item-name">Voir mon profil</span></a></li>@endauth
                 </ul>
                 <ul class="childNav" data-parent="administration">
@@ -187,9 +189,12 @@
                         </ul>
                     </li>
                 </ul>
+                @can('comptabilite')
                 <ul class="childNav" data-parent="tresorerie">
-                    <li class="nav-item"><a href="#"><i class="nav-icon i-Add-File"></i><span class="item-name">Sous-menu</span></a></li>
+                    <li class="nav-item"><a href="{{ route('reglement.index')}}"><i class="nav-icon i-Add-File"></i><span class="item-name">Liste</span></a></li>
+                    <li class="nav-item"><a href="{{ route('reglement.create', 1)}}"><i class="nav-icon i-Add-File"></i><span class="item-name">Création</span></a></li>
                 </ul>
+                @endcan
             </div>
             <div class="sidebar-overlay"></div>
         </div>
@@ -246,7 +251,8 @@
 
     <script src="{{ asset('js/plugins/mask/jquery.mask.min.js') }}"></script>
     <script src="{{ asset('js/scripts/customizer.script.min.js') }}"></script>
-    <script src="{{ asset('js/app.js') }}"></script>
+
+    @yield('js')
 
 </body>
 
