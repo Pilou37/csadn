@@ -24,7 +24,7 @@ $factory->define(User::class, function (FakerEn $faker) {
     $user = new User();
     $user->nom = $faker->firstName;
     $user->prenom = $faker->lastName;
-    $user->newLogin();
+    $user->setLogin();
     return [
         'genre' => $faker->numberBetween(1, 2),
         'nom' => $user->nom,

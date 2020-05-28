@@ -90,7 +90,7 @@ class UserController extends Controller
         );
 
         $user->fill($data);
-        $user->newLogin();
+        $user->setLogin();
         $user->save();
 
         if(isset($data['photo'])) { $this->storePhoto($user, $data['photo']); } //Stockage photo
