@@ -66,6 +66,10 @@
                         </div>
                     </form>
                 </div>
+                <div class="card-footer">
+                    <p>Vos données de connexion vous ont été transmises par mail.</p>
+                    <p>Si vous ne connaissez plus vos identifiants, merci de nous joindre via <a href="#">ce formulaire </a></p>
+                </div>
             </div>
         </div>
     </div>

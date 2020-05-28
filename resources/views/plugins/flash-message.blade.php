@@ -39,7 +39,6 @@
 @endif
 
 @if ($errors->any())
-<?php dd($errors) ?>
 <div class="row">
     <div class="col">
         <div class="alert alert-card alert-danger" role="alert"><strong class="text-capitalize">Merci de vérifier les erreurs</strong>

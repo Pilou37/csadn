@@ -193,6 +193,23 @@ class UserController extends Controller
         }
     }
 
+    public function resetPassword()
+    {
+        $data = request()->validate([
+            'nom'           => 'string',
+            'prenom'        => 'string']);
+        if(isset($data['nom'])&&isset($data['prenom']))
+        {
+            $user = new User;
+            $user->fill($data);
+            $user->setLogin();
+            echo $user->login;
+        } else
+        {
+            return view('auth.reset');
+        }
+    }
+
         /**
      * Affiche la liste des adhérents en fonction des droits
      *

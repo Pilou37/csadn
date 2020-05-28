@@ -17,11 +17,13 @@ use Illuminate\Support\Facades\Route;
     return view('welcome');
 });*/
 
-Auth::routes();
+Auth::routes(['reset' => false]);
 
 // Utilisateur
 Route::get('/', 'HomeController@index')->name('index');
 Route::get('/home', 'HomeController@dashboard')->name('home');
+Route::get('/reset', 'UserController@resetPassword')->name('reset');
+Route::post('/reset', 'UserController@resetPassword')->name('postreset');
 Route::get('/saison/{saisonId}', 'UserController@showUserSaison')->name('user.saison');
 
 Route::resource('user', 'UserController');
