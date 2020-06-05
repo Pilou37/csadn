@@ -1,6 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ContactFormSubmissionController;
+use Spatie\Honeypot\ProtectAgainstSpam;
+
+//use Spatie\Honeypot\ProtectAgainstSpam;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,14 +27,15 @@ Auth::routes(['reset' => false]);
 Route::get('/', 'HomeController@index')->name('index');
 Route::get('/home', 'HomeController@dashboard')->name('home');
 Route::get('/reset', 'UserController@resetPassword')->name('reset');
-Route::post('/reset', 'UserController@resetPassword')->name('postreset');
+Route::post('/reset', 'UserController@resetPassword')->name('postreset')->middleware(ProtectAgainstSpam::class);
 Route::get('/saison/{saisonId}', 'UserController@showUserSaison')->name('user.saison');
 
-Route::resource('user', 'UserController');
+Route::resource('user', 'UserController')->middleware(ProtectAgainstSpam::class);
 Route::get('/user/{user}/confirmation', 'UserController@confirmation')->name('user.confirmation');
 Route::post('/user/{user}/status', 'UserController@majStatus')->name('user.maj');
 
 Route::get('/reglement/{user}/create', 'ReglementController@create')->name('reglement.create');
 Route::get('/reglement/{user}/{reglement}/edit', 'ReglementController@edit')->name('reglement.edit');
 Route::resource('reglement', 'ReglementController')->except(['create','edit']);
+
 

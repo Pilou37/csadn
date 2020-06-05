@@ -32,7 +32,7 @@ class CreateUsersTable extends Migration
             $table->date('certif_at')->nullable();
             $table->integer('origine');
             $table->unsignedBigInteger('activite_id');
-            $table->integer('licence')->nullable();
+            $table->string('licence')->nullable();
             $table->date('validation_at')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();

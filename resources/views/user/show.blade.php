@@ -13,7 +13,7 @@
     <div class="col-md-12 mb-4">
         <div class="card text-left">
             <div class="card-header">
-                <h4 class="card-title mb-3">Profil de {{$user->nom}} {{$user->prenom}} | <small> N° de dossier : </small>{{$user->id}} </h4>
+                <h4 class="card-title mb-3">Profil de {{$user->nom}} {{$user->prenom}} | <small> N° de dossier : </small>{{$user->id}} | <small> N° licence FCD : </small>{{$user->licence}} </h4>
                 <?php $validationOk = App\Saison::isInActualSaison($user->validation_at) ?>
                 <?php $saison = \App\Saison::getActualSaison() ?>
                 <?php $licenceOk = $user->saisons->find($saison->id) ?>

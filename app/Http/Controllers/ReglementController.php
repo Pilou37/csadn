@@ -119,7 +119,7 @@ class ReglementController extends Controller
         return request()->validate([
             'user_id'          => 'required|integer',
             'nr_recu'       => 'required|integer',
-            'mode'          => 'required|string|in:cheque,espece,caf,coupon,autre',
+            'mode'          => 'required|integer|between:1,5',
             'valeur'        => 'required|integer'
         ]);
     }

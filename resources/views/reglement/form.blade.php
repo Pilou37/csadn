@@ -36,19 +36,19 @@
                             <h4 class="card-title mb-3">@if ($reglement ?? '') Modification @else Ajout @endif d'un règlement </h4>
                             <div class="form-row">
                                 <div class="form-group col-md-3">
-                                    <label for="nr_recu" class="ul-form__label">N° reçu :</label>
+                                    <label for="recu_id" class="ul-form__label">N° reçu :</label>
                                     <div class="input-group mb-3">
-                                    <input type="number" class="form-control @error('nr_recu') is-invalid" @enderror id="nr_recu" value="{{old('nr_recu', $reglement->nr_recu ?? '')}}" placeholder="Nr reçu" data-cip-id="nr_recu" name="nr_recu">
-                                    @error('nr_recu')
+                                    <input type="number" class="form-control @error('recu_id') is-invalid" @enderror id="recu_id" value="{{old('recu_id', $reglement->recu_id ?? '')}}" placeholder="Nr reçu" data-cip-id="recu_id" name="recu_id">
+                                    @error('recu_id')
                                         <div class="invalid-feedback">
-                                            {{ $errors->first('nr_recu') }}
+                                            {{ $errors->first('recu_id') }}
                                         </div>
                                     @enderror
                                     </div>
                                 </div>
 
                                 <div class="form-group col-md-6 ">
-                                    <label for="mode" class="ul-form__label @error('mode') text-danger @enderror">Activité principale :  {{ $errors->first('mode') }}</label>
+                                    <label for="mode" class="ul-form__label @error('mode') text-danger @enderror">Mode de règlement :  {{ $errors->first('mode') }}</label>
                                     <select class="form-control" name="mode">
                                         @if ($modes = \App\Mode::all())
                                         @if (old('mode_id'))

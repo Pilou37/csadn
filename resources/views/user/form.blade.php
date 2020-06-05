@@ -32,9 +32,10 @@
                     <form action="{{route('user.store')}}" method="POST" enctype="multipart/form-data">
                 @endif
                         @csrf
+                        @honeypot
                         <div class="card-body">
                             <div class="form-row">
-                                <div class="form-group col-md-1">
+                                <div class="form-group col-md-12 col-xl-2">
                                     <div class="p-3">
                                         @if (old('genre'))
                                             <?php $genre = old('genre') ?>
@@ -55,7 +56,7 @@
                                         </label>
                                     </div>
                                 </div>
-                                <div class="form-group col-md-5">
+                                <div class="form-group col-md-6 col-xl-5">
                                     <label for="nom" class="ul-form__label">NOM :</label>
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
@@ -69,7 +70,7 @@
                                     @enderror
                                     </div>
                                 </div>
-                                <div class="form-group col-md-6">
+                                <div class="form-group col-md-6 col-xl-5">
                                     <label for="prenom" class="ul-form__label">Prénom :</label>
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">

@@ -57,6 +57,10 @@
                                     {{ __('Login') }}
                                 </button>
 
+                                <a class="btn btn-warning" href="{{ route('reset') }}">
+                                    Identifiant ou mot de passe oublié
+                                 </a>
+
                                 @if (Route::has('password.request'))
                                     <a class="btn btn-warning" href="{{ route('password.request') }}">
                                        Créer ou réinitialiser un mot de passe
@@ -67,8 +71,7 @@
                     </form>
                 </div>
                 <div class="card-footer">
-                    <p>Vos données de connexion vous ont été transmises par mail.</p>
-                    <p>Si vous ne connaissez plus vos identifiants, merci de nous joindre via <a href="#">ce formulaire </a></p>
+                    <p>Vos données de connexion vous ont été transmises par mail. Merci de vérifier vos courriers indésirables.</p>
                 </div>
             </div>
         </div>

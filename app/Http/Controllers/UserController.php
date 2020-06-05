@@ -95,15 +95,15 @@ class UserController extends Controller
 
         if(isset($data['photo'])) { $this->storePhoto($user, $data['photo']); } //Stockage photo
         if(isset($data['certif'])) { $this->storeCertif($user, $data['certif']); } //Stockage certificat
-        $password = $this->initPassword();
-        if(isset( $password)) { $this->storePassword($user,  $password); } //Stockage mot de passe
+
+        $noHashPassword = $this->genPassword($user); // Génération et stockage mot de passe
 
         Mail::to($user->email)->send(new SuscribeMail($user));
 
         //$request->session()->flash('success', 'C\'est un succès');
         //dd($user);
 
-        $request->merge(['password' => $password]);
+        $request->merge(['password' => $noHashPassword]);
 
         if(!auth()->user()) {
             $loginControl = new LoginController();
@@ -200,10 +200,14 @@ class UserController extends Controller
             'prenom'        => 'string']);
         if(isset($data['nom'])&&isset($data['prenom']))
         {
-            $user = new User;
-            $user->fill($data);
-            $user->setLogin();
-            echo $user->login;
+            if($user = User::where('nom' , $data['nom'])->where('prenom' , $data['prenom'])->first())
+            {
+                $this->genPassword($user);
+                return redirect()->route('login')->with('success', 'Mot de passe réinitialisé, merci de consulter votre boite mail...');
+            } else {
+                request()->session()->flash('error', 'Adhérent non connu');
+                return view('auth.reset');
+            }
         } else
         {
             return view('auth.reset');
@@ -386,12 +390,15 @@ class UserController extends Controller
      * @param  \App\User  $user
      * @return \Illuminate\Http\Response
      */
-    private function storePassword(User $user, string $password) {
+    private function genPassword(User $user) {
+        $password = $this->initPassword();
         $user->update([
             'password' => Hash::make($password)
         ]); //turn the array into a string
 
         Mail::to($user->email)->send(new PasswordMail($user, $password));
+
+        return $password;
     }
 
     /**
